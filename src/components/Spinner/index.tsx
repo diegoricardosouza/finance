@@ -1,7 +1,7 @@
 import * as S from './styles'
 
 interface SpinnerProps {
-  size: number
+  size?: number
 }
 
 const Spinner = ({ size = 32 }: SpinnerProps) => {
