@@ -6,6 +6,7 @@ export default {
     primary: '#0B1437',
     primaryLight: '#111C44',
     secondary: '#7551FF',
+    secondaryHover: '#3519a1',
     white: '#FFF',
     lightGray: '#A3AED0',
     info: '#3965FF',
