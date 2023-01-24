@@ -7,7 +7,7 @@ interface ButtonProps {
   disabled?: boolean
   isLoading?: boolean
   children: React.ReactNode
-  onClick: () => void
+  onClick?: () => void
 }
 
 const Button = ({
