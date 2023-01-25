@@ -24,6 +24,7 @@ const GlobalStyles = createGlobalStyle`
       font-size: 1.4rem;
       font-weight: ${theme.font.normal};
       overflow-x: hidden;
+      background-color: ${theme.colors.primary};
     }
 
     .input-password {
