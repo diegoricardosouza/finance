@@ -1,7 +1,5 @@
+import Login from '@/templates/Login'
+
 export default function Home() {
-  return (
-    <>
-      <h1>Finance</h1>
-    </>
-  )
+  return <Login />
 }
