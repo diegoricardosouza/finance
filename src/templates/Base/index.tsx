@@ -1,6 +1,6 @@
 import Header from '@/components/Header'
 import Menu from '@/components/Menu'
-import { BaseProps } from '@/utils/types'
+import { BaseProps } from '@/types/Base'
 
 import * as S from './styles'
 

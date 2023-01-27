@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { HeaderProps } from '../../utils/types'
+
+import { HeaderProps } from '@/types/Header'
 import * as S from './styles'
 
 const Header = ({ title, titleBreadcrumb }: HeaderProps) => {

@@ -5,9 +5,9 @@ import { RxEyeClosed } from 'react-icons/rx'
 
 import FormGroup from '@/components/FormGroup'
 import { Input } from '@/components/Input'
+import Button from '@/components/Button'
 
 import * as S from './styles'
-import Button from '@/components/Button'
 
 interface FormValues {
   email: string

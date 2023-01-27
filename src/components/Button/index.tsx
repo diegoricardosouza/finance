@@ -1,14 +1,7 @@
+import { ButtonProps } from '@/types/Button'
 import Spinner from '../Spinner'
 
 import * as S from './styles'
-
-interface ButtonProps {
-  type: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  isLoading?: boolean
-  children: React.ReactNode
-  onClick?: () => void
-}
 
 const Button = ({
   type,

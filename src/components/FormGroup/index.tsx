@@ -1,12 +1,5 @@
+import { FormGroupProps } from '@/types/Form'
 import * as S from './styles'
-
-interface FormGroupProps {
-  children: React.ReactNode
-  label: string
-  error?: string
-  required?: boolean
-  password?: boolean
-}
 
 const FormGroup = ({
   children,
