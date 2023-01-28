@@ -21,6 +21,7 @@ export const Container = styled.div`
     display: flex;
     background: ${theme.colors.primaryLight};
     border-radius: 2rem;
+    width: 100%;
     min-height: 9.7rem;
     padding: 1.4rem 1.7rem;
     align-items: center;
