@@ -39,7 +39,7 @@ export const Content = styled.div`
 
     @media ${device.laptop} {
       width: calc(100% - 29rem);
-      padding-top: 14.5rem;
+      padding-top: 13.5rem;
     }
   `}
 `
