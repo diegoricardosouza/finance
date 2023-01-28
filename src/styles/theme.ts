@@ -5,6 +5,7 @@ export default {
   colors: {
     primary: '#0B1437',
     primaryLight: '#111C44',
+    primaryLight2: '#1B254B',
     secondary: '#7551FF',
     secondaryHover: '#3519a1',
     white: '#FFF',
