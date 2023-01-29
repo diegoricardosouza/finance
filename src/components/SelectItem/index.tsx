@@ -16,7 +16,7 @@ const SelectItem = React.forwardRef<HTMLInputElement, SelectItemProps>(
       <S.StyledItems {...props} ref={ref}>
         <Select.ItemText>{children}</Select.ItemText>
 
-        <S.StyledItemIndicator className="SelectItemIndicator">
+        <S.StyledItemIndicator>
           <MdCheck size={15} />
         </S.StyledItemIndicator>
       </S.StyledItems>
