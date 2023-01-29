@@ -7,4 +7,5 @@ export interface SelectProps {
   label: string
   items: SelectItem[]
   selected?: string
+  value?: string
 }
