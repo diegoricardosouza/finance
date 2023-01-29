@@ -6,11 +6,20 @@ import { SelectProps } from '@/types/Select'
 
 import * as S from './styles'
 
-const Select = ({ label, items, selected }: SelectProps) => {
+interface CustomSelectProps extends SelectProps {
+  onValueChange?: (value: string) => void
+}
+
+const Select = ({
+  label,
+  items,
+  selected,
+  onValueChange
+}: CustomSelectProps) => {
   return (
-    <SelectUi.Root defaultValue={selected}>
+    <SelectUi.Root defaultValue={selected} onValueChange={onValueChange}>
       <S.StyledSelectTrigger aria-label={label}>
-        <SelectUi.Value placeholder={`${label}...`} />
+        <SelectUi.Value placeholder={`${label}`} />
 
         <S.StyledSelectIcon>
           <IoIosArrowDown size={20} />

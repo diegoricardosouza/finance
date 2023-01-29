@@ -7,10 +7,10 @@ export const StyledSelectTrigger = styled(Select.Trigger)`
     align-items: center;
     justify-content: center;
     border-radius: 10rem;
-    padding: 0 15px;
+    padding: 0 1.5rem;
     line-height: 1;
     height: 4rem;
-    gap: 5px;
+    gap: 0.5rem;
     background-color: ${theme.colors.primaryLight2};
     color: ${theme.colors.white};
     border: 0;
@@ -48,19 +48,21 @@ export const StyledSelectViewport = styled(Select.Viewport)`
 `
 
 export const StyledSelectScrollDownButton = styled(Select.ScrollDownButton)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 25px;
-  background-color: red;
-  color: green;
-  cursor: default;
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    background-color: ${theme.colors.lightGray};
+    color: ${theme.colors.white};
+    cursor: default;
+  `}
 `
 
 export const StyledSelectLabel = styled(Select.Label)`
   ${({ theme }) => css`
-    padding: 0 25px;
-    line-height: 25px;
+    padding: 0 2.5rem;
+    line-height: 2.5rem;
     color: ${theme.colors.lightGray};
   `}
 `
