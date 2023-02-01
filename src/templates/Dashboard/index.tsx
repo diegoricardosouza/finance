@@ -3,9 +3,50 @@ import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 
 import Card from '@/components/Card'
 import Base from '../Base'
+import SelectedData from '@/components/SelectedData'
+import Table from '@/components/Table'
 
 import * as S from './styles'
-import SelectedData from '@/components/SelectedData'
+
+const columns = [
+  {
+    Header: 'Data',
+    accessor: 'date'
+  },
+  {
+    Header: 'Categoria',
+    accessor: 'category'
+  },
+  {
+    Header: 'Título',
+    accessor: 'title'
+  },
+  {
+    Header: 'Valor',
+    accessor: 'value'
+  }
+]
+
+const data = [
+  {
+    date: '2022-10-20',
+    category: 'Alimentação',
+    title: 'McDonalds',
+    value: 'R$ ' + 32.12
+  },
+  {
+    date: '2022-10-22',
+    category: 'Aluguel',
+    title: 'Aluguel Apt',
+    value: 'R$ ' + 2300
+  },
+  {
+    date: '2022-10-25',
+    category: 'Alimentação',
+    title: 'Burger King',
+    value: 'R$ ' + 28.0
+  }
+]
 
 const Dashboard = () => {
   return (
@@ -34,6 +75,10 @@ const Dashboard = () => {
 
         <SelectedData />
       </S.Container>
+
+      <S.WrapperTable>
+        <Table title="Development Table" columns={columns} data={data} />
+      </S.WrapperTable>
     </Base>
   )
 }

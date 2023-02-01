@@ -1,5 +1,5 @@
 import { device } from '@/utils/device'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
   display: grid;
@@ -17,4 +17,13 @@ export const Container = styled.div`
   @media (${device.laptopL}) {
     grid-template-columns: repeat(4, 1fr);
   }
+`
+
+export const WrapperTable = styled.div`
+  ${({ theme }) => css`
+    width: 100%;
+    background: ${theme.colors.primaryLight};
+    border-radius: 2rem;
+    margin-top: 1.7rem;
+  `}
 `
