@@ -1,6 +1,7 @@
 export interface TableProps {
+  id: string
   date: string
   category: string
   title: string
-  value: string
+  value: number
 }
