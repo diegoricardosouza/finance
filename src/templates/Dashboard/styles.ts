@@ -10,10 +10,6 @@ export const Container = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (${device.laptop}) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   @media (${device.laptopL}) {
     grid-template-columns: repeat(4, 1fr);
   }

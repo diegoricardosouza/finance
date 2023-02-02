@@ -10,41 +10,43 @@ import * as S from './styles'
 
 const columns = [
   {
-    Header: 'Data',
-    accessor: 'date'
+    title: 'Data',
+    width: 170
   },
   {
-    Header: 'Categoria',
-    accessor: 'category'
+    title: 'Categoria',
+    width: 170
   },
   {
-    Header: 'Título',
-    accessor: 'title'
+    title: 'Título'
   },
   {
-    Header: 'Valor',
-    accessor: 'value'
+    title: 'Valor',
+    width: 170
   }
 ]
 
 const data = [
   {
+    id: 'sdafasdfsa-123sa1df32a1',
     date: '2022-10-20',
     category: 'Alimentação',
     title: 'McDonalds',
-    value: 'R$ ' + 32.12
+    value: 32.12
   },
   {
+    id: 'wqerty78-789as7df',
     date: '2022-10-22',
     category: 'Aluguel',
     title: 'Aluguel Apt',
-    value: 'R$ ' + 2300
+    value: 2300
   },
   {
+    id: 'xzcv4f56as-4asdf-78a9s',
     date: '2022-10-25',
     category: 'Alimentação',
     title: 'Burger King',
-    value: 'R$ ' + 28.0
+    value: 28
   }
 ]
 
@@ -77,7 +79,12 @@ const Dashboard = () => {
       </S.Container>
 
       <S.WrapperTable>
-        <Table title="Development Table" columns={columns} data={data} />
+        <Table
+          title="Development Table"
+          columns={columns}
+          data={data}
+          deleteButton
+        />
       </S.WrapperTable>
     </Base>
   )
