@@ -1,7 +1,9 @@
+import { device } from '@/utils/device'
 import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
   padding: 2rem 0;
+  overflow-x: auto;
 `
 
 export const Title = styled.h2`
@@ -15,8 +17,13 @@ export const Title = styled.h2`
 `
 
 export const Table = styled.table`
-  width: 100%;
+  display: table;
+  width: 70rem;
   border-collapse: collapse;
+
+  @media (${device.laptop}) {
+    width: 100%;
+  }
 `
 
 export const Thead = styled.thead``
@@ -57,6 +64,7 @@ export const TrBody = styled.tr``
 
 export const TdBody = styled.td`
   ${({ theme }) => css`
+    display: table-cell;
     color: ${theme.colors.white};
     font-weight: ${theme.font.bold};
     padding: 1.5rem 0 0.7rem 0;
@@ -64,5 +72,18 @@ export const TdBody = styled.td`
     &:first-child {
       padding-left: 2.5rem;
     }
+
+    &:last-child {
+      padding-right: 2.5rem;
+    }
+  `}
+`
+
+export const LabelCategory = styled.span`
+  ${({ theme }) => css`
+    display: inline-flex;
+    background: ${theme.colors.primaryLight2};
+    border-radius: 0.5rem;
+    padding: 0.7rem 1rem;
   `}
 `

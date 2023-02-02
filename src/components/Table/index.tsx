@@ -1,49 +1,39 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react/jsx-key */
 import { TableProps } from '@/types/Table'
-import { useTable, useSortBy, Column } from 'react-table'
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
+import ButtonDelete from '../ButtonDelete'
 
 import * as S from './style'
+
+interface Column {
+  title: string
+  width?: number
+}
 
 interface TablePropsComponent {
   data: TableProps[]
   columns: Column[]
   title?: string
+  deleteButton?: boolean
 }
 
-const Table = ({ data, columns, title }: TablePropsComponent) => {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy)
-
-  const firstPageRows = rows.slice(0, 20)
+const Table = ({ data, columns, title, deleteButton }: TablePropsComponent) => {
+  const handleDelete = (id: string) => {
+    console.log(id)
+  }
 
   return (
     <S.Container>
       {title && <S.Title>{title}</S.Title>}
 
-      <S.Table {...getTableProps()}>
+      <S.Table>
         <S.Thead>
-          {headerGroups.map((headerGroup) => (
-            <S.TrHeader {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column: any) => (
-                <S.Th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
+          <S.TrHeader>
+            {columns.map((column) => (
+              <S.Th key={column.title} style={{ width: column?.width }}>
+                {column.title}
+              </S.Th>
+            ))}
 
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <IoIosArrowDown size={20} />
-                      ) : (
-                        <IoIosArrowUp size={20} />
-                      )
-                    ) : (
-                      <IoIosArrowDown size={20} />
-                    )}
-                  </span>
-                </S.Th>
-              ))}
-
+            {deleteButton && (
               <S.Th
                 style={{
                   width: 110
@@ -51,24 +41,39 @@ const Table = ({ data, columns, title }: TablePropsComponent) => {
               >
                 Ações
               </S.Th>
-            </S.TrHeader>
-          ))}
+            )}
+          </S.TrHeader>
         </S.Thead>
 
-        <S.Tbody {...getTableBodyProps()}>
-          {firstPageRows.map((row) => {
-            prepareRow(row)
+        <S.Tbody>
+          {data.map((item) => {
             return (
-              <S.TrBody {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <S.TdBody {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </S.TdBody>
-                  )
-                })}
+              <S.TrBody key={item.title}>
+                <S.TdBody>{item.date}</S.TdBody>
+                <S.TdBody>
+                  <S.LabelCategory>{item.category}</S.LabelCategory>
+                </S.TdBody>
+                <S.TdBody>{item.title}</S.TdBody>
+                <S.TdBody>
+                  {new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                    maximumFractionDigits: 2
+                  }).format(item.value)}
+                </S.TdBody>
 
-                <S.TdBody>ssfas</S.TdBody>
+                {deleteButton && (
+                  <S.TdBody>
+                    <ButtonDelete
+                      id={item.id}
+                      title="Você tem certeza?"
+                      content="Essa ação não pode ser desfeita. Isso excluirá permanentemente e removerá os dados de nossos servidores."
+                      titleCancel="Cancelar"
+                      titleConfirm="Sim, quero deletar"
+                      onClick={() => handleDelete(item.id)}
+                    />
+                  </S.TdBody>
+                )}
               </S.TrBody>
             )
           })}
