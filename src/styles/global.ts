@@ -47,6 +47,19 @@ const GlobalStyles = createGlobalStyle`
         color: ${theme.colors.lightGray};
       }
     }
+
+    .Button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.4rem;
+      padding: 0 1.5rem;
+      font-size: 1.5rem;
+      line-height: 1;
+      font-weight: 500;
+      height: 3.5rem;
+      cursor: pointer;
+    }
   `}
 `
 
