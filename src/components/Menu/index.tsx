@@ -1,7 +1,6 @@
-import Link from 'next/link'
+import { useState } from 'react'
 import {
   MdHome,
-  MdOutlineShoppingCart,
   MdTableChart,
   MdLock,
   MdOutlineClose,
@@ -9,10 +8,12 @@ import {
 } from 'react-icons/md'
 import { TbLayoutKanban } from 'react-icons/tb'
 import { ImUser } from 'react-icons/im'
+import { TbReportMoney } from 'react-icons/tb'
 
 import Logo from '../Logo'
+import MenuItem from '../MenuItem'
+
 import * as S from './styles'
-import { useState } from 'react'
 
 const Menu = () => {
   const [open, setOpen] = useState(false)
@@ -39,59 +40,29 @@ const Menu = () => {
 
         <S.WrapperMenu>
           <ul>
-            <S.ItemMenu active>
-              <Link href="/">
-                <S.IconMenu>
-                  <MdHome size={20} />
-                </S.IconMenu>
-                Dashboard
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/dashboard" icon={<MdHome size={20} />}>
+              Dashboard
+            </MenuItem>
 
-            <S.ItemMenu>
-              <Link href="/">
-                <S.IconMenu>
-                  <MdOutlineShoppingCart size={20} />
-                </S.IconMenu>
-                NFT Marketplace
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/finance" icon={<TbReportMoney size={20} />}>
+              Financeiro
+            </MenuItem>
 
-            <S.ItemMenu>
-              <Link href="/">
-                <S.IconMenu>
-                  <MdTableChart size={20} />
-                </S.IconMenu>
-                Tables
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/" icon={<MdTableChart size={20} />}>
+              Tables
+            </MenuItem>
 
-            <S.ItemMenu>
-              <Link href="/">
-                <S.IconMenu>
-                  <TbLayoutKanban size={20} />
-                </S.IconMenu>
-                Kanban
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/" icon={<TbLayoutKanban size={20} />}>
+              Kanban
+            </MenuItem>
 
-            <S.ItemMenu>
-              <Link href="/">
-                <S.IconMenu>
-                  <ImUser size={20} />
-                </S.IconMenu>
-                Profile
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/" icon={<ImUser size={20} />}>
+              Profile
+            </MenuItem>
 
-            <S.ItemMenu>
-              <Link href="/">
-                <S.IconMenu>
-                  <MdLock size={20} />
-                </S.IconMenu>
-                Sign In
-              </Link>
-            </S.ItemMenu>
+            <MenuItem href="/" icon={<MdLock size={20} />}>
+              Sign In
+            </MenuItem>
           </ul>
         </S.WrapperMenu>
       </S.Container>
