@@ -1,4 +1,5 @@
 import { Item } from '@/types/Item'
+import { months } from './months'
 
 export const getCurrentMonth = () => {
   const now = new Date()
@@ -22,7 +23,7 @@ export const filterListbyMonth = (list: Item[], date: string): Item[] => {
   return newList
 }
 
-// export const filterListbyMonthV2 = (list: Item[], date: string): Item[] => {
+// export const filterListbyMonth = (list: Item[], date: string): Item[] => {
 //   const [year, month] = date.split('-')
 
 //   return list.filter((itemList: Item) => {
@@ -40,3 +41,10 @@ export const formatDate = (date: Date): string => {
 }
 
 const addZeroToDate = (n: number): string => (n < 10 ? `0${n}` : `${n}`)
+
+export const currentMonthExt = () => {
+  const date = new Date()
+  const currentMonth = date.getMonth()
+
+  return months[currentMonth].value
+}
