@@ -2,6 +2,6 @@ export interface Category {
   [tag: string]: {
     title: string
     color: string
-    expense: string
+    expense: boolean
   }
 }
