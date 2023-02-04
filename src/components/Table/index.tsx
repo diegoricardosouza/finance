@@ -1,7 +1,9 @@
-import { TableProps } from '@/types/Table'
 import ButtonDelete from '../ButtonDelete'
+import { Item } from '@/types/Item'
 
 import * as S from './style'
+import { formatDate } from '@/utils/dateFilter'
+import { categories } from '@/data/categories'
 
 interface Column {
   title: string
@@ -9,13 +11,13 @@ interface Column {
 }
 
 interface TablePropsComponent {
-  data: TableProps[]
+  list: Item[]
   columns: Column[]
   title?: string
   deleteButton?: boolean
 }
 
-const Table = ({ data, columns, title, deleteButton }: TablePropsComponent) => {
+const Table = ({ list, columns, title, deleteButton }: TablePropsComponent) => {
   const handleDelete = (id: string) => {
     console.log(id)
   }
@@ -46,37 +48,39 @@ const Table = ({ data, columns, title, deleteButton }: TablePropsComponent) => {
         </S.Thead>
 
         <S.Tbody>
-          {data.map((item) => {
-            return (
-              <S.TrBody key={item.title}>
-                <S.TdBody>{item.date}</S.TdBody>
-                <S.TdBody>
-                  <S.LabelCategory>{item.category}</S.LabelCategory>
-                </S.TdBody>
-                <S.TdBody>{item.title}</S.TdBody>
-                <S.TdBody>
-                  {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                    maximumFractionDigits: 2
-                  }).format(item.value)}
-                </S.TdBody>
+          {list.map((item) => (
+            <S.TrBody key={item.title}>
+              <S.TdBody>{formatDate(item.date)}</S.TdBody>
+              <S.TdBody>
+                <S.LabelCategory>
+                  {categories[item.category].title}
+                </S.LabelCategory>
+              </S.TdBody>
+              <S.TdBody>{item.title}</S.TdBody>
+              <S.TdBodyValue
+                color={categories[item.category].expense ? 'red' : 'green'}
+              >
+                {new Intl.NumberFormat('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL',
+                  maximumFractionDigits: 2
+                }).format(item.value)}
+              </S.TdBodyValue>
 
-                {deleteButton && (
-                  <S.TdBody>
-                    <ButtonDelete
-                      id={item.id}
-                      title="Você tem certeza?"
-                      content="Essa ação não pode ser desfeita. Isso excluirá permanentemente e removerá os dados de nossos servidores."
-                      titleCancel="Cancelar"
-                      titleConfirm="Sim, quero deletar"
-                      onClick={() => handleDelete(item.id)}
-                    />
-                  </S.TdBody>
-                )}
-              </S.TrBody>
-            )
-          })}
+              {deleteButton && (
+                <S.TdBody>
+                  <ButtonDelete
+                    id={item.id}
+                    title="Você tem certeza?"
+                    content="Essa ação não pode ser desfeita. Isso excluirá permanentemente e removerá os dados de nossos servidores."
+                    titleCancel="Cancelar"
+                    titleConfirm="Sim, quero deletar"
+                    onClick={() => handleDelete(item.id)}
+                  />
+                </S.TdBody>
+              )}
+            </S.TrBody>
+          ))}
         </S.Tbody>
       </S.Table>
     </S.Container>

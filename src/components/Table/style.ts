@@ -79,10 +79,27 @@ export const TdBody = styled.td`
   `}
 `
 
+export const TdBodyValue = styled.td<{ color: string }>`
+  ${({ theme, color }) => css`
+    display: table-cell;
+    color: ${color === 'red' ? theme.colors.error : theme.colors.success};
+    font-weight: ${theme.font.bold};
+    padding: 1.5rem 0 0.7rem 0;
+
+    &:first-child {
+      padding-left: 2.5rem;
+    }
+
+    &:last-child {
+      padding-right: 2.5rem;
+    }
+  `}
+`
+
 export const LabelCategory = styled.span`
   ${({ theme }) => css`
     display: inline-flex;
-    background: ${theme.colors.primaryLight2};
+    background: ${theme.colors.label};
     border-radius: 0.5rem;
     padding: 0.7rem 1rem;
   `}
