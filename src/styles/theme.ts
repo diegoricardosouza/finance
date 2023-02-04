@@ -13,7 +13,8 @@ export default {
     info: '#3965FF',
     success: '#01B574',
     alert: '#FFCE20',
-    error: '#EE5D50'
+    error: '#EE5D50',
+    label: '#232e58'
   },
   font: {
     family: {
