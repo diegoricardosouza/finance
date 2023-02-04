@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MdOutlineArrowForward } from 'react-icons/md'
 
 import Select from '../Select'
-import { currentMonth } from '@/utils/dateFilter'
+import { currentMonthExt } from '@/utils/dateFilter'
 import { years } from '@/utils/years'
 import { months } from '@/utils/months'
 
@@ -33,7 +33,7 @@ const SelectedData = ({ onButtonClick }: SelectDataProps) => {
         <Select
           label="Mês"
           items={months}
-          selected={currentMonth()}
+          selected={currentMonthExt()}
           onValueChange={handleChangeMonth}
         />
         <Select
