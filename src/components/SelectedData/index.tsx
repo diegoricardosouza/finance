@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { MdOutlineArrowForward } from 'react-icons/md'
 
+import Select from '../Select'
+import { currentMonth } from '@/utils/dateFilter'
 import { years } from '@/utils/years'
 import { months } from '@/utils/months'
-import { getCurrentMonth } from '@/utils/dateFilter'
 
-import Select from '../Select'
 import * as S from './styles'
 
-const SelectedData = () => {
+interface SelectDataProps {
+  onButtonClick: (data: { month: string; year: string }) => void
+}
+
+const SelectedData = ({ onButtonClick }: SelectDataProps) => {
   const [selectedValueMonth, setSelectedValueMonth] = useState<string>('')
   const [selectedValueYear, setSelectedValueYear] = useState<string>('')
-
-  // const [selectedMonth, setSelectedMonth] = useState<string>('')
-  // const [selectedYear, setSelectedYear] = useState<string>('')
+  const date = new Date()
 
   const handleChangeMonth = (value: string) => {
     setSelectedValueMonth(value)
@@ -21,18 +23,6 @@ const SelectedData = () => {
 
   const handleChangeYear = (value: string) => {
     setSelectedValueYear(value)
-  }
-
-  // const handleCurrentYear = () => {
-  //   setSelectedYear()
-  // }
-
-  // const handleCurrentMonth = () => {
-  //   setSelectedMonth()
-  // }
-
-  const onClick = () => {
-    console.log('ok', getCurrentMonth(), selectedValueMonth, selectedValueYear)
   }
 
   return (
@@ -43,12 +33,24 @@ const SelectedData = () => {
         <Select
           label="Mês"
           items={months}
-          selected="fevereiro"
+          selected={currentMonth()}
+          onValueChange={handleChangeMonth}
+        />
+        <Select
+          label="Ano"
+          items={years}
+          selected={String(date.getFullYear())}
           onValueChange={handleChangeYear}
         />
-        <Select label="Ano" items={years} onValueChange={handleChangeMonth} />
 
-        <S.FilterButton onClick={onClick}>
+        <S.FilterButton
+          onClick={() => {
+            onButtonClick({
+              month: selectedValueMonth,
+              year: selectedValueYear
+            })
+          }}
+        >
           <MdOutlineArrowForward size={20} />
         </S.FilterButton>
       </S.WrapperContainer>
