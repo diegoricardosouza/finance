@@ -18,7 +18,7 @@ export const Title = styled.h2`
 
 export const Table = styled.table`
   display: table;
-  width: 70rem;
+  width: 85rem;
   border-collapse: collapse;
 
   @media (${device.laptop}) {
