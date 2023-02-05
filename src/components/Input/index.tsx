@@ -20,5 +20,11 @@ export const Input = styled.input`
     &::placeholder {
       color: ${theme.colors.lightGray};
     }
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+      font-size: 2rem;
+    }
   `}
 `
