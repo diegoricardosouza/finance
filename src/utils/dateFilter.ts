@@ -40,6 +40,13 @@ export const formatDate = (date: Date): string => {
   return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`
 }
 
+export const getCurrentDateNow = () => {
+  const date = new Date()
+  return `${date.getFullYear()}-${addZeroToDate(
+    date.getMonth() + 1
+  )}-${addZeroToDate(date.getDate())}`
+}
+
 const addZeroToDate = (n: number): string => (n < 10 ? `0${n}` : `${n}`)
 
 export const currentMonthExt = () => {
@@ -47,4 +54,8 @@ export const currentMonthExt = () => {
   const currentMonth = date.getMonth()
 
   return months[currentMonth].value
+}
+
+export const orderItems = (items: Item[]) => {
+  return items.sort((a, b) => b.date.getTime() - a.date.getTime())
 }
