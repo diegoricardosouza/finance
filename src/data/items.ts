@@ -28,5 +28,12 @@ export const items: Item[] = [
     category: 'salary',
     title: 'Salário',
     value: 3300
+  },
+  {
+    id: 'uiouy-qwerft-78yrty8-n15418n',
+    date: new Date(2023, 2, 10),
+    category: 'salary',
+    title: 'Salário',
+    value: 3300
   }
 ]
