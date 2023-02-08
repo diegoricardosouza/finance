@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MdOutlineArrowForward } from 'react-icons/md'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 import Select from '../Select'
 import { currentMonthExt } from '@/utils/dateFilter'
@@ -51,7 +51,7 @@ const SelectedData = ({ onButtonClick }: SelectDataProps) => {
             })
           }}
         >
-          <MdOutlineArrowForward size={20} />
+          <HiOutlineSearch size={20} />
         </S.FilterButton>
       </S.WrapperContainer>
     </S.Container>
