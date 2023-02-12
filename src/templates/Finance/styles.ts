@@ -21,5 +21,30 @@ export const WrapperTable = styled.div`
     background: ${theme.colors.primaryLight};
     border-radius: 2rem;
     margin-top: 1.7rem;
+    position: relative;
+  `}
+`
+
+export const AddButton = styled.button`
+  ${({ theme }) => css`
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    border: 0;
+    background: ${theme.colors.secondary};
+    color: ${theme.colors.white};
+    border-radius: 0.6rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+
+    &:hover {
+      background: ${theme.colors.secondaryHover};
+    }
   `}
 `
