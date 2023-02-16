@@ -4,6 +4,7 @@ interface createUserProps {
   name: string
   email: string
   password: string
+  role: string
 }
 
 interface updateUserProps {
@@ -23,16 +24,26 @@ export const getUser = async (id: string) => {
   return user
 }
 
+export const userExists = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: { email }
+  })
+
+  return user
+}
+
 export const createUser = async (
   name: string,
   email: string,
-  password: string
+  password: string,
+  role: string
 ) => {
   const user = await prisma.user.create({
     data: {
       name,
       email,
-      password
+      password,
+      role
     }
   })
 
