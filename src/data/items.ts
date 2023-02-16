@@ -27,13 +27,13 @@ export const items: Item[] = [
     date: new Date(2023, 1, 26),
     category: 'salary',
     title: 'Salário',
-    value: 3300
+    value: 2300
   },
   {
     id: 'uiouy-qwerft-78yrty8-n15418n',
     date: new Date(2023, 2, 10),
     category: 'salary',
     title: 'Salário',
-    value: 3300
+    value: 4200
   }
 ]
