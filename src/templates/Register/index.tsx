@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast, ToastContainer } from 'react-toastify'
 import { BsEye } from 'react-icons/bs'
 import { RxEyeClosed } from 'react-icons/rx'
 
@@ -8,11 +9,14 @@ import { Input } from '@/components/Input'
 import Button from '@/components/Button'
 
 import * as S from './styles'
+import 'react-toastify/dist/ReactToastify.css'
+import { SelectForm } from '@/components/SelectForm'
 
 interface FormValues {
   name: string
   email: string
   password: string
+  role: string
 }
 
 const Register = () => {
@@ -24,6 +28,7 @@ const Register = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<FormValues>()
 
@@ -46,12 +51,41 @@ const Register = () => {
       : 'A senha precisa ter no mínimo 8 caracteres.'
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    setIsLoading(true)
-    console.log(data)
+    try {
+      setIsLoading(true)
 
-    setTimeout(() => {
+      const response = await fetch('api/user', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+
+      const resData = await response.json()
+
+      if (resData.error) {
+        toast.error(resData.error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+      } else {
+        toast.success('Usuário criado com sucesso!', {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+        reset()
+      }
+
       setIsLoading(false)
-    }, 2500)
+    } catch (err) {
+      toast.error('Internal Server Error', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+      setIsLoading(false)
+    }
   }
 
   const handleViewPassword = () => {
@@ -119,12 +153,21 @@ const Register = () => {
               </div>
             </FormGroup>
 
+            <FormGroup label="Função" required>
+              <SelectForm {...register('role', { required: true })}>
+                <option value="editor">Editor</option>
+                <option value="admin">Administrador</option>
+              </SelectForm>
+            </FormGroup>
+
             <Button type="submit" disabled={isLoading} isLoading={isLoading}>
               Criar minha conta
             </Button>
           </form>
         </S.Form>
       </S.FormContainer>
+
+      <ToastContainer />
     </S.Container>
   )
 }
