@@ -25,6 +25,7 @@ import { Item } from '@/types/Item'
 import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
+import { categories } from '@/data/categories'
 
 const columns = [
   {
@@ -61,6 +62,10 @@ const Finance = () => {
   const [selectedMonth, setSelectedMonth] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
 
+  const [income, setIncome] = useState(0)
+  const [expense, setExpense] = useState(0)
+  const balance = income - expense
+
   const {
     register,
     handleSubmit,
@@ -70,6 +75,22 @@ const Finance = () => {
   const date = useMemo(() => {
     return new Date()
   }, [])
+
+  useEffect(() => {
+    let incomeCount = 0
+    let expenseCount = 0
+
+    for (const i in filteredList) {
+      if (categories[filteredList[i].category].expense) {
+        expenseCount += filteredList[i].value
+      } else {
+        incomeCount += filteredList[i].value
+      }
+    }
+
+    setIncome(incomeCount)
+    setExpense(expenseCount)
+  }, [filteredList])
 
   useEffect(() => {
     const orderList = orderItems(list)
@@ -126,22 +147,33 @@ const Finance = () => {
         <Card
           icon={<GiMoneyStack size={30} />}
           title="Receita"
-          subtitle="R$ 4682.50"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(income)}
           color="white"
         />
 
         <Card
           icon={<GiTakeMyMoney size={30} />}
           title="Despesa"
-          subtitle="R$ 3682.50"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(expense)}
           color="white"
         />
 
         <Card
           icon={<MdOutlineAttachMoney size={30} />}
           title="Balanço"
-          subtitle="R$ 2682.50"
-          color="green"
+          subtitle={`R$ ${new Intl.NumberFormat('pt-BR', {
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(balance)}`}
+          color={balance < 0 ? 'red' : balance > 1 ? 'green' : 'white'}
         />
 
         <SelectedData onButtonClick={handleFilter} />
