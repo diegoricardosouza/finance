@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { signOut } from 'next-auth/react'
 import {
   MdHome,
   MdTableChart,
-  MdLock,
+  MdLogout,
   MdOutlineClose,
   MdOutlineMenu
 } from 'react-icons/md'
@@ -44,7 +45,10 @@ const Menu = () => {
               Dashboard
             </MenuItem>
 
-            <MenuItem href="/finance" icon={<TbReportMoney size={20} />}>
+            <MenuItem
+              href="/dashboard/finance"
+              icon={<TbReportMoney size={20} />}
+            >
               Financeiro
             </MenuItem>
 
@@ -60,9 +64,18 @@ const Menu = () => {
               Profile
             </MenuItem>
 
-            <MenuItem href="/" icon={<MdLock size={20} />}>
-              Sign In
-            </MenuItem>
+            <S.Logout
+              onClick={() =>
+                signOut({
+                  callbackUrl: `${window.location.origin}`
+                })
+              }
+            >
+              <S.IconMenu>
+                <MdLogout size={20} />
+              </S.IconMenu>
+              Sair
+            </S.Logout>
           </ul>
         </S.WrapperMenu>
       </S.Container>

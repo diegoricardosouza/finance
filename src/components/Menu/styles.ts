@@ -129,3 +129,32 @@ export const ButtonOpenMenu = styled.div`
     }
   `}
 `
+
+export const Logout = styled.button`
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    color: ${theme.colors.white};
+    font-weight: ${theme.font.normal};
+    position: relative;
+    padding: 0 1rem 0 0;
+    height: 3.6rem;
+    transition: all 0.2s ease-in;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: ${theme.colors.secondary};
+    }
+  `}
+`
+
+export const IconMenu = styled.div`
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+`
