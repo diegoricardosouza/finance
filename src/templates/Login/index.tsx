@@ -1,4 +1,7 @@
 import { useRef, useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { toast, ToastContainer } from 'react-toastify'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { BsEye } from 'react-icons/bs'
 import { RxEyeClosed } from 'react-icons/rx'
@@ -8,6 +11,7 @@ import { Input } from '@/components/Input'
 import Button from '@/components/Button'
 
 import * as S from './styles'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface FormValues {
   email: string
@@ -19,6 +23,9 @@ const Login = () => {
   const [viewPassword, setViewPassword] = useState('password')
   const [isLoading, setIsLoading] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
+
+  const routes = useRouter()
+  const { push, query } = routes
 
   const {
     register,
@@ -42,11 +49,35 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setIsLoading(true)
-    console.log(data)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2500)
+    const result = await signIn('credentials', {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+      callbackUrl: `${
+        query?.callbackUrl
+          ? window.location.origin + '' + query?.callbackUrl
+          : window.location.origin + '/dashboard'
+      }`
+    })
+
+    if (result?.url) {
+      toast.success('Login realizado com sucesso!', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+
+      return push(result?.url)
+    }
+
+    setIsLoading(false)
+
+    if (result?.error) {
+      toast.error(result?.error, {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+    }
   }
 
   const handleViewPassword = () => {
@@ -112,6 +143,8 @@ const Login = () => {
           </form>
         </S.Form>
       </S.FormContainer>
+
+      <ToastContainer />
     </S.Container>
   )
 }
