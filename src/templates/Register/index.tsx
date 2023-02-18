@@ -7,10 +7,10 @@ import { RxEyeClosed } from 'react-icons/rx'
 import FormGroup from '@/components/FormGroup'
 import { Input } from '@/components/Input'
 import Button from '@/components/Button'
+import { SelectForm } from '@/components/SelectForm'
 
 import * as S from './styles'
 import 'react-toastify/dist/ReactToastify.css'
-import { SelectForm } from '@/components/SelectForm'
 
 interface FormValues {
   name: string
