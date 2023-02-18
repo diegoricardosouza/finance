@@ -21,11 +21,11 @@ import {
   orderItems
 } from '@/utils/dateFilter'
 import { items } from '@/data/items'
+import { categories } from '@/data/categories'
 import { Item } from '@/types/Item'
 import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
-import { categories } from '@/data/categories'
 
 const columns = [
   {
