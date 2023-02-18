@@ -4,13 +4,22 @@ import {
   deleteUser,
   getAllUsers,
   getUser,
-  updateUser
+  updateUser,
+  userExists
 } from '@/services/user'
+import { getSession } from 'next-auth/react'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getSession({ req })
+
+  if (!session) {
+    res.status(401).json({ message: 'Você não está autenticado' })
+    return
+  }
+
   try {
     switch (req.method) {
       case 'GET': {
@@ -24,8 +33,14 @@ export default async function handler(
       }
 
       case 'POST': {
-        const { name, email, password } = req.body
-        const user = await createUser(name, email, password)
+        const { name, email, password, role } = req.body
+        if (await userExists(email)) {
+          res.status(404).json({ error: 'Usuário já existe' })
+
+          return
+        }
+
+        const user = await createUser(name, email, password, role)
         return res.json(user)
       }
 
@@ -44,6 +59,6 @@ export default async function handler(
         break
     }
   } catch (error) {
-    return res.status(500).json({ message: 'error' })
+    return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
