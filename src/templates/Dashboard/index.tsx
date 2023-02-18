@@ -5,7 +5,7 @@ import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 import Base from '../Base'
 import Card from '@/components/Card'
 import SelectedData from '@/components/SelectedData'
-import { currentMonth } from '@/utils/dateFilter'
+import { currentMonthExt } from '@/utils/dateFilter'
 
 import * as S from './styles'
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
   const date = new Date()
 
   const handleFilter = ({ month, year }: { month: string; year: string }) => {
-    setSelectedMonth(month === '' ? currentMonth() : month)
+    setSelectedMonth(month === '' ? currentMonthExt() : month)
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
   }
 
