@@ -1,4 +1,5 @@
-import prisma from '../../prisma/prisma'
+import { hashPassword } from '@/utils/passwordHash'
+import prisma from '../lib/db'
 
 interface createUserProps {
   name: string
@@ -38,11 +39,13 @@ export const createUser = async (
   password: string,
   role: string
 ) => {
+  const passwordHash = await hashPassword(password)
+
   const user = await prisma.user.create({
     data: {
       name,
       email,
-      password,
+      password: passwordHash,
       role
     }
   })
