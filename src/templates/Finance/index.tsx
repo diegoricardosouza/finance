@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast, ToastContainer } from 'react-toastify'
 import { MdOutlineAttachMoney } from 'react-icons/md'
 import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -22,10 +24,11 @@ import {
 } from '@/utils/dateFilter'
 import { items } from '@/data/items'
 import { categories } from '@/data/categories'
-import { Item } from '@/types/Item'
 import { convertMoney } from '@/utils/numberFormat'
+import { Item } from '@/types/Item'
 
 import * as S from './styles'
+import 'react-toastify/dist/ReactToastify.css'
 
 const columns = [
   {
@@ -66,9 +69,13 @@ const Finance = () => {
   const [expense, setExpense] = useState(0)
   const balance = income - expense
 
+  const { data: session } = useSession()
+  const userId: any = session?.user
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<FormValues>()
 
@@ -118,19 +125,60 @@ const Finance = () => {
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
 
-    const formData = {
-      ...data,
-      value: parseFloat(data.value.replace(/\./g, '').replace(',', '.'))
-    }
+      const formData = {
+        ...data,
+        value: parseFloat(data.value.replace(/\./g, '').replace(',', '.')),
+        id: userId.id
+      }
 
-    console.log(formData)
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/item`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        }
+      )
 
-    setTimeout(() => {
+      const resData = await response.json()
+
+      if (resData.error) {
+        toast.error(resData.error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+      } else {
+        toast.success('Item criado com sucesso!', {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+        reset()
+        setTimeout(() => {
+          setOpenModal(false)
+        }, 1000)
+      }
+
       setIsLoading(false)
-    }, 2500)
+    } catch (error) {
+      toast.error('Internal Server Error', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+      setIsLoading(false)
+    }
   }
+
+  // const dateStr = '2023-02-18'
+  // const dateObj = new Date(dateStr)
+  // const dateFormatted = dateObj.toISOString()
+
+  // console.log(dateFormatted)
 
   // console.log(currentMonth)
 
@@ -253,6 +301,8 @@ const Finance = () => {
           </Button>
         </form>
       </Modal>
+
+      <ToastContainer />
     </Base>
   )
 }
