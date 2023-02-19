@@ -54,14 +54,17 @@ const Register = () => {
     try {
       setIsLoading(true)
 
-      const response = await fetch('api/user', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+      )
 
       const resData = await response.json()
 
