@@ -3,6 +3,7 @@ import {
   createItem,
   deleteItem,
   getAllItems,
+  getAllItemsByDate,
   getItem,
   updateItem
 } from '@/services/item'
@@ -25,10 +26,18 @@ export default async function handler(
         if (req.query.id) {
           const item = await getItem(req.query.id as string)
           return res.status(200).json(item)
-        } else {
-          const items = await getAllItems()
-          return res.json(items)
         }
+
+        if (req.query.date) {
+          const date = req.query.date as string
+          const [year, month] = date.split('-')
+
+          const item = await getAllItemsByDate(parseInt(year), parseInt(month))
+          return res.status(200).json(item)
+        }
+
+        const items = await getAllItems()
+        return res.json(items)
       }
 
       case 'POST': {
