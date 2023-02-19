@@ -25,6 +25,21 @@ export const getItem = async (id: string) => {
   return item
 }
 
+export const getAllItemsByDate = async (year: number, month: number) => {
+  const firstDayOfMonth = new Date(year, month - 1, 1).toISOString()
+  const lastDayOfMonth = new Date(year, month, 0).toISOString()
+
+  const items = await prisma.item.findMany({
+    where: {
+      date: {
+        gte: new Date(firstDayOfMonth),
+        lt: new Date(lastDayOfMonth)
+      }
+    }
+  })
+  return items
+}
+
 export const createItem = async (
   date: string,
   category: string,
