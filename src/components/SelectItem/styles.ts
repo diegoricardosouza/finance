@@ -14,6 +14,7 @@ export const StyledItems = styled(Select.Item)`
     user-select: none;
     font-weight: ${theme.font.bold};
     transition: all 0.2s ease-in;
+    z-index: 3;
 
     &[data-disabled] {
       color: ${theme.colors.lightGray};

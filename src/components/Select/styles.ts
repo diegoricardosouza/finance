@@ -40,6 +40,8 @@ export const StyledSelectContent = styled(Select.Content)`
     border-radius: 2rem;
     box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35),
       0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+    position: relative;
+    z-index: 3;
   `}
 `
 
