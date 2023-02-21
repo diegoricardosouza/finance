@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true
-}
+const withPWA = require('next-pwa')({
+  dest: 'public'
+})
 
-module.exports = nextConfig
+module.exports = withPWA({})
