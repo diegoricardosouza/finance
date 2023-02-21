@@ -35,6 +35,9 @@ export const getAllItemsByDate = async (year: number, month: number) => {
         gte: new Date(firstDayOfMonth),
         lt: new Date(lastDayOfMonth)
       }
+    },
+    orderBy: {
+      date: 'desc'
     }
   })
   return items
@@ -47,8 +50,21 @@ export const createItem = async (
   value: number,
   id: string
 ) => {
-  const dateObj = new Date(date)
-  const dateFormatted = dateObj.toISOString()
+  const dateString = date
+  const now = new Date()
+
+  const dateParts = dateString.split('-')
+  const year = parseInt(dateParts[0])
+  const month = parseInt(dateParts[1]) - 1
+  const day = parseInt(dateParts[2])
+  const utcDate = Date.UTC(year, month, day)
+  const localDate = new Date(
+    utcDate + new Date().getTimezoneOffset() * 60 * 1000
+  )
+  localDate.setHours(now.getHours())
+  localDate.setMinutes(now.getMinutes())
+  localDate.setSeconds(now.getSeconds())
+  const dateFormatted = localDate.toISOString()
 
   const item = await prisma.item.create({
     data: {
