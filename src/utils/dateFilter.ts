@@ -25,6 +25,8 @@ export const getCurrentMonth = () => {
 
 export const formatDate = (date: string): string => {
   const dateFormated = new Date(date)
+  const now = new Date()
+  dateFormated.setUTCHours(now.getUTCHours() - 3)
 
   const year = dateFormated.getFullYear()
   const month = dateFormated.getMonth() + 1
