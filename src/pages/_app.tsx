@@ -19,8 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
           />
           <link rel="shortcut icon" href="/assets/icon-512.png" />
           <link rel="apple-touch-icon" href="/assets/icon-512.png" />
-          <link rel="shortcut icon" href="/assets/favicon.png" />
-          <link rel="apple-touch-icon" href="/assets/favicon.png" />
+          <link rel="shortcut icon" href="/assets/favicon.ico" />
+          <link rel="apple-touch-icon" href="/assets/favicon.ico" />
           <meta name="description" content="Controle de Gastos" />
           <link rel="manifest" href="/manifest.json" />
           <meta name="theme-color" content="#7551FF" />
