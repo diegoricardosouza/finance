@@ -8,7 +8,7 @@ export const Content = styled.div`
     height: 100vh;
     overflow: auto;
     overflow-x: hidden;
-    padding: 12rem 2rem 0 2rem;
+    padding: 12rem 2rem 2rem 2rem;
     position: absolute;
     right: 0;
     top: 0;

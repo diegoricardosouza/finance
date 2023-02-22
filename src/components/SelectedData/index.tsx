@@ -50,6 +50,7 @@ const SelectedData = ({ onButtonClick }: SelectDataProps) => {
               year: selectedValueYear
             })
           }}
+          aria-label="Search"
         >
           <HiOutlineSearch size={20} />
         </S.FilterButton>

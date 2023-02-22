@@ -130,6 +130,8 @@ export const ButtonOpenMenu = styled.div`
   `}
 `
 
+export const LogoutWrapper = styled.li``
+
 export const Logout = styled.button`
   ${({ theme }) => css`
     display: flex;

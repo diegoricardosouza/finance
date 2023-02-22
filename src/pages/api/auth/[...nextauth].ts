@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       return { ...token, ...user }
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
       session.user = token

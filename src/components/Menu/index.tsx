@@ -23,7 +23,7 @@ const Menu = () => {
     <>
       <S.Overlay open={open} />
       <S.ButtonOpenMenu>
-        <button onClick={() => setOpen(!open)}>
+        <button onClick={() => setOpen(!open)} aria-label="Open Menu">
           <MdOutlineMenu size={28} />
         </button>
       </S.ButtonOpenMenu>
@@ -31,7 +31,7 @@ const Menu = () => {
       <S.Container open={open}>
         <S.WrapperLogo>
           <S.ButtonClose>
-            <button onClick={() => setOpen(!open)}>
+            <button onClick={() => setOpen(!open)} aria-label="Close Menu">
               <MdOutlineClose size={24} />
             </button>
           </S.ButtonClose>
@@ -64,18 +64,21 @@ const Menu = () => {
               Profile
             </MenuItem>
 
-            <S.Logout
-              onClick={() =>
-                signOut({
-                  callbackUrl: `${window.location.origin}`
-                })
-              }
-            >
-              <S.IconMenu>
-                <MdLogout size={20} />
-              </S.IconMenu>
-              Sair
-            </S.Logout>
+            <S.LogoutWrapper>
+              <S.Logout
+                onClick={() =>
+                  signOut({
+                    callbackUrl: `${window.location.origin}`
+                  })
+                }
+                aria-label="Logout"
+              >
+                <S.IconMenu>
+                  <MdLogout size={20} />
+                </S.IconMenu>
+                Sair
+              </S.Logout>
+            </S.LogoutWrapper>
           </ul>
         </S.WrapperMenu>
       </S.Container>

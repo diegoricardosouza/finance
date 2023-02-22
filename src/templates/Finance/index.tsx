@@ -1,5 +1,8 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast, ToastContainer } from 'react-toastify'
 import { MdOutlineAttachMoney } from 'react-icons/md'
 import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -13,19 +16,17 @@ import FormGroup from '@/components/FormGroup'
 import { Input } from '@/components/Input'
 import Button from '@/components/Button'
 import { SelectForm } from '@/components/SelectForm'
+import { Item } from '@prisma/client'
 import {
   currentMonthExt,
-  filterListbyMonth,
   getCurrentDateNow,
-  getCurrentMonth,
-  orderItems
+  getCurrentMonth
 } from '@/utils/dateFilter'
-import { items } from '@/data/items'
 import { categories } from '@/data/categories'
-import { Item } from '@/types/Item'
 import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
+import 'react-toastify/dist/ReactToastify.css'
 
 const columns = [
   {
@@ -53,8 +54,7 @@ interface FormValues {
 }
 
 const Finance = () => {
-  const [list, setList] = useState(items)
-  const [filteredList, setFilteredList] = useState<Item[]>([])
+  const [list, setList] = useState<any>([])
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth())
   const [openModal, setOpenModal] = useState(false)
   const [inputDate, setInputDate] = useState(getCurrentDateNow())
@@ -66,36 +66,19 @@ const Finance = () => {
   const [expense, setExpense] = useState(0)
   const balance = income - expense
 
+  const { data: session } = useSession()
+  const userId: any = session?.user
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors }
   } = useForm<FormValues>()
 
   const date = useMemo(() => {
     return new Date()
   }, [])
-
-  useEffect(() => {
-    let incomeCount = 0
-    let expenseCount = 0
-
-    for (const i in filteredList) {
-      if (categories[filteredList[i].category].expense) {
-        expenseCount += filteredList[i].value
-      } else {
-        incomeCount += filteredList[i].value
-      }
-    }
-
-    setIncome(incomeCount)
-    setExpense(expenseCount)
-  }, [filteredList])
-
-  useEffect(() => {
-    const orderList = orderItems(list)
-    setFilteredList(filterListbyMonth(orderList, currentMonth))
-  }, [currentMonth, list])
 
   useEffect(() => {
     setSelectedMonth((prevState) =>
@@ -108,6 +91,36 @@ const Finance = () => {
     setCurrentMonth(`${selectedYear}-${selectedMonth}`)
   }, [selectedMonth, selectedYear, date])
 
+  const getItensByDate = useCallback(async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}`
+    )
+    const resData = await response.json()
+    setList(resData)
+  }, [currentMonth])
+
+  useEffect(() => {
+    if (currentMonth !== '-') {
+      getItensByDate()
+    }
+  }, [currentMonth, getItensByDate])
+
+  useEffect(() => {
+    let incomeCount = 0
+    let expenseCount = 0
+
+    for (const i in list) {
+      if (categories[list[i].category].expense) {
+        expenseCount += list[i].value
+      } else {
+        incomeCount += list[i].value
+      }
+    }
+
+    setIncome(incomeCount)
+    setExpense(expenseCount)
+  }, [list])
+
   const handleFilter = ({ month, year }: { month: string; year: string }) => {
     setSelectedMonth(month === '' ? currentMonthExt() : month)
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
@@ -118,31 +131,83 @@ const Finance = () => {
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
 
-    const formData = {
-      ...data,
-      value: parseFloat(data.value.replace(/\./g, '').replace(',', '.'))
-    }
+      const formData = {
+        ...data,
+        value: parseFloat(data.value.replace(/\./g, '').replace(',', '.')),
+        id: userId.id
+      }
 
-    console.log(formData)
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/item`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        }
+      )
 
-    setTimeout(() => {
+      const resData = await response.json()
+
+      if (resData.error) {
+        toast.error(resData.error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+      } else {
+        toast.success('Item criado com sucesso!', {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+        getItensByDate()
+        reset()
+        setTimeout(() => {
+          setOpenModal(false)
+        }, 1000)
+      }
+
       setIsLoading(false)
-    }, 2500)
+    } catch (error) {
+      toast.error('Internal Server Error', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+      setIsLoading(false)
+    }
   }
 
-  // console.log(currentMonth)
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/item`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+      })
 
-  // console.log('mes: ' + selectedMonth, 'ano: ' + selectedYear)
-  // console.log(
-  //   'click',
-  //   'mes: ' + selectedMonth === '' ? currentMonth() : selectedMonth,
-  //   'ano: ' + selectedYear === '' ? String(date.getFullYear()) : selectedYear
-  // )
+      setList((prevState: Item[]) => prevState.filter((item) => item.id !== id))
+
+      toast.success('Item deletado com sucesso!', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+    } catch {
+      toast.error('Ocorreu um erro ao deletar o item', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+    }
+  }
 
   return (
-    <Base title="Dashboard" titleBreadcrumb="Dashboard">
+    <Base title="Financeiro" titleBreadcrumb="Financeiro">
       <S.Container>
         <Card
           icon={<GiMoneyStack size={30} />}
@@ -169,10 +234,11 @@ const Finance = () => {
         <Card
           icon={<MdOutlineAttachMoney size={30} />}
           title="Balanço"
-          subtitle={`R$ ${new Intl.NumberFormat('pt-BR', {
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
             currency: 'BRL',
             maximumFractionDigits: 2
-          }).format(balance)}`}
+          }).format(balance)}
           color={balance < 0 ? 'red' : balance > 1 ? 'green' : 'white'}
         />
 
@@ -180,15 +246,16 @@ const Finance = () => {
       </S.Container>
 
       <S.WrapperTable>
-        <S.AddButton onClick={() => setOpenModal(true)}>
+        <S.AddButton onClick={() => setOpenModal(true)} aria-label="Open modal">
           <AiOutlinePlus size={20} />
         </S.AddButton>
 
         <Table
           title="Tabela de Finanças"
           columns={columns}
-          list={filteredList}
+          list={list}
           deleteButton
+          onDelete={handleDelete}
         />
       </S.WrapperTable>
 
@@ -218,6 +285,7 @@ const Finance = () => {
               <option value="">Selecione a categoria</option>
               <option value="food">Alimentação</option>
               <option value="rent">Despesa</option>
+              <option value="marketplace">Mercado</option>
               <option value="salary">Salário</option>
             </SelectForm>
           </FormGroup>
@@ -253,6 +321,8 @@ const Finance = () => {
           </Button>
         </form>
       </Modal>
+
+      <ToastContainer />
     </Base>
   )
 }

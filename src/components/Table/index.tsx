@@ -15,13 +15,16 @@ interface TablePropsComponent {
   columns: Column[]
   title?: string
   deleteButton?: boolean
+  onDelete: (id: string) => void
 }
 
-const Table = ({ list, columns, title, deleteButton }: TablePropsComponent) => {
-  const handleDelete = (id: string) => {
-    console.log(id)
-  }
-
+const Table = ({
+  list,
+  columns,
+  title,
+  deleteButton,
+  onDelete
+}: TablePropsComponent) => {
   return (
     <S.Container>
       {title && <S.Title>{title}</S.Title>}
@@ -49,7 +52,7 @@ const Table = ({ list, columns, title, deleteButton }: TablePropsComponent) => {
 
         <S.Tbody>
           {list.map((item) => (
-            <S.TrBody key={item.title}>
+            <S.TrBody key={item.id}>
               <S.TdBody>{formatDate(item.date)}</S.TdBody>
               <S.TdBody>
                 <S.LabelCategory>
@@ -75,7 +78,7 @@ const Table = ({ list, columns, title, deleteButton }: TablePropsComponent) => {
                     content="Essa ação não pode ser desfeita. Isso excluirá permanentemente e removerá os dados de nossos servidores."
                     titleCancel="Cancelar"
                     titleConfirm="Sim, quero deletar"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => onDelete(item.id)}
                   />
                 </S.TdBody>
               )}

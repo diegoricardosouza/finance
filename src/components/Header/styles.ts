@@ -7,6 +7,7 @@ export const Wrapper = styled.header`
   right: 0;
   width: 100%;
   padding: 0 2rem;
+  z-index: 1;
 
   @media ${device.laptop} {
     width: calc(100% - 29rem);
