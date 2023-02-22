@@ -64,6 +64,7 @@ export const createItem = async (
   localDate.setHours(now.getHours())
   localDate.setMinutes(now.getMinutes())
   localDate.setSeconds(now.getSeconds())
+  localDate.setUTCHours(now.getUTCHours() - 3)
   const dateFormatted = localDate.toISOString()
 
   const item = await prisma.item.create({
