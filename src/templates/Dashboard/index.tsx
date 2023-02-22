@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react'
 import { MdOutlineAttachMoney } from 'react-icons/md'
 import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
