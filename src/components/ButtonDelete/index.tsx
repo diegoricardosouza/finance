@@ -22,7 +22,7 @@ const ButtonDelete = ({
   return (
     <AlertDialog.Root>
       <S.StyledAlertDialogTrigger asChild>
-        <button>
+        <button aria-label="Delete Button">
           <RiDeleteBinLine size={17} />
         </button>
       </S.StyledAlertDialogTrigger>

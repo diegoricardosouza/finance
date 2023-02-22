@@ -14,7 +14,7 @@ const Modal = ({ children, visible, onClose }: ModalProps) => {
       <S.Overlay open={visible} onClick={onClose} />
 
       <S.Container open={visible}>
-        <S.CloseButton onClick={onClose}>
+        <S.CloseButton onClick={onClose} aria-label="Close Modal">
           <MdClose size={23} />
         </S.CloseButton>
 
