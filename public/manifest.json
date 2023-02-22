@@ -1,0 +1,27 @@
+{
+  "name": "Diego Ricardo - Painel Administrativo",
+  "short_name": "Painel Admin",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#7551FF",
+  "description": "Estou focado na criação de aplicações web front-end responsivas integrando com tecnologias de back-end.",
+  "display": "fullscreen",
+  "start_url": "/",
+  "theme_color": "#7551FF"
+}
