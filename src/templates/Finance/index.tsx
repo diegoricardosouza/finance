@@ -207,7 +207,7 @@ const Finance = () => {
   }
 
   return (
-    <Base title="Dashboard" titleBreadcrumb="Dashboard">
+    <Base title="Financeiro" titleBreadcrumb="Financeiro">
       <S.Container>
         <Card
           icon={<GiMoneyStack size={30} />}
