@@ -1,5 +1,7 @@
 // import { Item } from '@/types/Item'
 import { months } from './months'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
 
 export const getCurrentMonth = () => {
   const now = new Date()
@@ -24,15 +26,16 @@ export const getCurrentMonth = () => {
 // }
 
 export const formatDate = (date: string): string => {
-  const dateFormated = new Date(date)
-  const now = new Date()
-  dateFormated.setUTCHours(now.getUTCHours() - 3)
+  // const dateFormated = new Date(date)
+  // const now = new Date()
+  // dateFormated.setUTCHours(now.getUTCHours() - 3)
 
-  const year = dateFormated.getFullYear()
-  const month = dateFormated.getMonth() + 1
-  const day = dateFormated.getDate()
+  // const year = dateFormated.getFullYear()
+  // const month = dateFormated.getMonth() + 1
+  // const day = dateFormated.getDate()
 
-  return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`
+  // return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`
+  return dayjs(date).locale('pt-br').format('DD/MM/YYYY')
 }
 
 export const getCurrentDateNow = () => {

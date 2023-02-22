@@ -27,6 +27,8 @@ import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
 import 'react-toastify/dist/ReactToastify.css'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
 
 const columns = [
   {
@@ -205,6 +207,25 @@ const Finance = () => {
       })
     }
   }
+
+  // const localDate = new Date('2023-02-01')
+  // const now = new Date()
+  // // localDate.setHours(now.getHours())
+  // // localDate.setMinutes(now.getMinutes())
+  // // localDate.setSeconds(now.getSeconds())
+  // // const localDate2 = dayjs('2023-02-01T01:58:25.000Z')
+  // //   .locale('pt-br')
+  // //   .format('DD/MM/YYYY')
+  // const localDate2 = dayjs('2023-02-01')
+  //   .locale('pt-br')
+  //   .set('hour', now.getHours())
+  //   .set('minute', now.getMinutes())
+  //   .set('second', now.getSeconds())
+  //   .toISOString()
+
+  // const a = dayjs(localDate2).locale('pt-br').format('DD/MM/YYYY')
+
+  // console.log(a)
 
   return (
     <Base title="Financeiro" titleBreadcrumb="Financeiro">

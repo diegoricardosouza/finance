@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
 import prisma from '../lib/db'
 
 interface createItemProps {
@@ -50,21 +52,27 @@ export const createItem = async (
   value: number,
   id: string
 ) => {
-  const dateString = date
+  // const dateString = date
   const now = new Date()
+  const dateFormatted = dayjs(date)
+    .locale('pt-br')
+    .set('hour', now.getHours())
+    .set('minute', now.getMinutes())
+    .set('second', now.getSeconds())
+    .toISOString()
 
-  const dateParts = dateString.split('-')
-  const year = parseInt(dateParts[0])
-  const month = parseInt(dateParts[1]) - 1
-  const day = parseInt(dateParts[2])
-  const utcDate = Date.UTC(year, month, day)
-  const localDate = new Date(
-    utcDate + new Date().getTimezoneOffset() * 60 * 1000
-  )
-  localDate.setHours(now.getHours())
-  localDate.setMinutes(now.getMinutes())
-  localDate.setSeconds(now.getSeconds())
-  const dateFormatted = localDate.toISOString()
+  // const dateParts = dateString.split('-')
+  // const year = parseInt(dateParts[0])
+  // const month = parseInt(dateParts[1]) - 1
+  // const day = parseInt(dateParts[2])
+  // const utcDate = Date.UTC(year, month, day)
+  // const localDate = new Date(
+  //   utcDate + new Date().getTimezoneOffset() * 60 * 1000
+  // )
+  // localDate.setHours(now.getHours())
+  // localDate.setMinutes(now.getMinutes())
+  // localDate.setSeconds(now.getSeconds())
+  // const dateFormatted = localDate.toISOString()
 
   const item = await prisma.item.create({
     data: {
