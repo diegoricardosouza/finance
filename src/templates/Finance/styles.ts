@@ -22,6 +22,7 @@ export const WrapperTable = styled.div`
     border-radius: 2rem;
     margin-top: 1.7rem;
     position: relative;
+    overflow: hidden;
   `}
 `
 
@@ -42,6 +43,7 @@ export const AddButton = styled.button`
     height: 3.5rem;
     cursor: pointer;
     transition: all 0.2s ease-in;
+    z-index: 3;
 
     &:hover {
       background: ${theme.colors.secondaryHover};
