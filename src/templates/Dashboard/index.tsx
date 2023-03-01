@@ -56,7 +56,7 @@ const Dashboard = () => {
 
       <S.WrapperCharts>
         <S.WrapperLineChart>
-          <Chart
+          {/* <Chart
             options={lineChartOptionsArea}
             series={[
               {
@@ -70,7 +70,7 @@ const Dashboard = () => {
             ]}
             type="line"
             width="100%"
-          />
+          /> */}
         </S.WrapperLineChart>
       </S.WrapperCharts>
     </Base>
