@@ -41,7 +41,20 @@ export const lineChartOptionsArea: ApexOptions = {
   },
   xaxis: {
     type: 'category',
-    categories: ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN'],
+    categories: [
+      'JAN',
+      'FEV',
+      'MAR',
+      'ABR',
+      'MAI',
+      'JUN',
+      'JUL',
+      'AGO',
+      'SET',
+      'OUT',
+      'NOV',
+      'DEZ'
+    ],
     labels: {
       style: {
         colors: '#A3AED0',
