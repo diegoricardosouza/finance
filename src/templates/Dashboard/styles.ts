@@ -23,3 +23,19 @@ export const WrapperTable = styled.div`
     margin-top: 1.7rem;
   `}
 `
+
+export const WrapperCharts = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+`
+
+export const WrapperLineChart = styled.div`
+  ${({ theme }) => css`
+    background: ${theme.colors.primaryLight};
+    border-radius: 2rem;
+    width: 100%;
+    padding: 2rem;
+  `}
+`

@@ -26,6 +26,8 @@ export const Container = styled.div`
     padding: 1.4rem 1.7rem;
     align-items: center;
     gap: 1.8rem;
+    position: relative;
+    overflow: hidden;
   `}
 `
 
@@ -65,4 +67,16 @@ export const Subtitle = styled.p<CardStyleProps>`
 
     ${!!color && wrapperModifiers[color](theme)};
   `}
+`
+
+export const LoadingWrapper = styled.div`
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

@@ -27,8 +27,6 @@ import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
 import 'react-toastify/dist/ReactToastify.css'
-import dayjs from 'dayjs'
-import 'dayjs/locale/pt-br'
 
 const columns = [
   {
@@ -63,7 +61,7 @@ const Finance = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
-
+  const [loading, setLoading] = useState(true)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
   const balance = income - expense
@@ -99,6 +97,7 @@ const Finance = () => {
     )
     const resData = await response.json()
     setList(resData)
+    setLoading(false)
   }, [currentMonth])
 
   useEffect(() => {
@@ -124,8 +123,10 @@ const Finance = () => {
   }, [list])
 
   const handleFilter = ({ month, year }: { month: string; year: string }) => {
+    setLoading(true)
     setSelectedMonth(month === '' ? currentMonthExt() : month)
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
+    setLoading(false)
   }
 
   const handleCloseModal = () => {
@@ -162,6 +163,7 @@ const Finance = () => {
           theme: 'dark'
         })
       } else {
+        setLoading(true)
         toast.success('Item criado com sucesso!', {
           position: toast.POSITION.BOTTOM_CENTER,
           theme: 'dark'
@@ -171,6 +173,7 @@ const Finance = () => {
         setTimeout(() => {
           setOpenModal(false)
         }, 1000)
+        setLoading(false)
       }
 
       setIsLoading(false)
@@ -220,6 +223,7 @@ const Finance = () => {
             maximumFractionDigits: 2
           }).format(income)}
           color="white"
+          isLoading={loading}
         />
 
         <Card
@@ -231,6 +235,7 @@ const Finance = () => {
             maximumFractionDigits: 2
           }).format(expense)}
           color="white"
+          isLoading={loading}
         />
 
         <Card
@@ -242,15 +247,21 @@ const Finance = () => {
             maximumFractionDigits: 2
           }).format(balance)}
           color={balance < 0 ? 'red' : balance > 1 ? 'green' : 'white'}
+          isLoading={loading}
         />
 
         <SelectedData onButtonClick={handleFilter} />
       </S.Container>
 
       <S.WrapperTable>
-        <S.AddButton onClick={() => setOpenModal(true)} aria-label="Open modal">
-          <AiOutlinePlus size={20} />
-        </S.AddButton>
+        {!loading && (
+          <S.AddButton
+            onClick={() => setOpenModal(true)}
+            aria-label="Open modal"
+          >
+            <AiOutlinePlus size={20} />
+          </S.AddButton>
+        )}
 
         <Table
           title="Tabela de Finanças"
@@ -258,6 +269,7 @@ const Finance = () => {
           list={list}
           deleteButton
           onDelete={handleDelete}
+          isLoading={loading}
         />
       </S.WrapperTable>
 
