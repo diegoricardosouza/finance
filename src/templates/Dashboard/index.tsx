@@ -6,19 +6,22 @@ import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 
 import Base from '../Base'
 import Card from '@/components/Card'
-import SelectedData from '@/components/SelectedData'
+import SelectedYear from '@/components/SelectedYear'
 import BarChart from '@/components/BarChart'
 import {
   totalYearByMonthCashIn,
-  totalYearByMonthCashOut
+  totalYearByMonthCashOut,
+  totalYearCashIn,
+  totalYearCashOut
 } from '@/utils/itemsFilter'
+import { Item } from '@/types/Item'
 
 import * as S from './styles'
-import { Item } from '@/types/Item'
 
 const Dashboard = () => {
   const [selectedYear, setSelectedYear] = useState('')
   const [dataYear, setDataYear] = useState<Item[]>([])
+  const balance = totalYearCashIn(dataYear) - totalYearCashOut(dataYear)
 
   const handleFilter = ({ year }: { year: string }) => {
     const date = new Date()
@@ -73,25 +76,37 @@ const Dashboard = () => {
         <Card
           icon={<GiMoneyStack size={30} />}
           title="Receita Anual"
-          subtitle="R$ 4682.50"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(totalYearCashIn(dataYear))}
           color="white"
         />
 
         <Card
           icon={<GiTakeMyMoney size={30} />}
           title="Despesa Anual"
-          subtitle="R$ 3682.50"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(totalYearCashOut(dataYear))}
           color="white"
         />
 
         <Card
           icon={<MdOutlineAttachMoney size={30} />}
           title="Balanço Anual"
-          subtitle="R$ 2682.50"
-          color="green"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(balance)}
+          color={balance < 0 ? 'red' : balance > 1 ? 'green' : 'white'}
         />
 
-        <SelectedData onButtonClick={handleFilter} />
+        <SelectedYear onButtonClick={handleFilter} />
       </S.Container>
 
       <S.WrapperCharts>

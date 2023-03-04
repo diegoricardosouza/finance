@@ -2,16 +2,18 @@ import { device } from '@/utils/device'
 import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: 1.7rem;
+  flex-wrap: wrap;
 
   @media (${device.tablet}) {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (${device.laptopL}) {
-    grid-template-columns: repeat(4, 1fr);
+  @media (${device.laptop}) {
+    display: flex;
+    flex-wrap: nowrap;
   }
 `
 
@@ -26,7 +28,7 @@ export const WrapperTable = styled.div`
 
 export const WrapperCharts = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 2rem;
   margin-top: 2rem;
 `
@@ -37,5 +39,10 @@ export const WrapperLineChart = styled.div`
     border-radius: 2rem;
     width: 100%;
     padding: 2rem;
+    overflow-x: scroll;
+
+    @media (${device.tablet}) {
+      overflow-x: auto;
+    }
   `}
 `
