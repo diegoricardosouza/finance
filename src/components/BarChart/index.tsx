@@ -35,9 +35,13 @@ export interface LineChartProps {
 const BarChart = ({ data }: LineChartProps) => {
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: true
+        display: true,
+        labels: {
+          color: '#FFF' // muda a cor das legendas para verde
+        }
       },
       Tooltip: true,
       title: {
@@ -48,11 +52,17 @@ const BarChart = ({ data }: LineChartProps) => {
       x: {
         grid: {
           display: false
+        },
+        ticks: {
+          color: '#FFF'
         }
       },
       y: {
         grid: {
           display: false
+        },
+        ticks: {
+          color: '#FFF'
         }
       }
     }
@@ -79,7 +89,7 @@ const BarChart = ({ data }: LineChartProps) => {
       }
     ]
   }
-  return <Bar data={dataChart} options={options} width={400} height={180} />
+  return <Bar data={dataChart} options={options} width={400} height={450} />
 }
 
 export default BarChart
