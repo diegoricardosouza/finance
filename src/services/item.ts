@@ -45,6 +45,24 @@ export const getAllItemsByDate = async (year: number, month: number) => {
   return items
 }
 
+export const getAllItemsByYear = async (year: number) => {
+  const firstDayOfYear = `${year}-01-01`
+  const lastDayOfYear = `${year}-12-31`
+
+  const items = await prisma.item.findMany({
+    where: {
+      date: {
+        gte: new Date(firstDayOfYear),
+        lt: new Date(lastDayOfYear)
+      }
+    },
+    orderBy: {
+      date: 'desc'
+    }
+  })
+  return items
+}
+
 export const createItem = async (
   date: string,
   category: string,
@@ -53,11 +71,24 @@ export const createItem = async (
   id: string
 ) => {
   const now = new Date()
+
+  // Obtém o deslocamento UTC em minutos
+  const utcOffsetInMinutes = now.getTimezoneOffset()
+
+  // Converte o deslocamento UTC para milissegundos
+  const utcOffsetInMilliseconds = utcOffsetInMinutes * 60 * 1000
+
+  // Adiciona o deslocamento UTC ao horário atual para obter o horário UTC do Brasil
+  const utcTimeInBrazil = now.getTime() + utcOffsetInMilliseconds
+
+  // Cria um novo objeto Date a partir do horário UTC do Brasil
+  const dateInBrazil = new Date(utcTimeInBrazil)
+
   const dateFormatted = dayjs(date)
     .locale('pt-br')
-    .set('hour', now.getHours())
-    .set('minute', now.getMinutes())
-    .set('second', now.getSeconds())
+    .set('hour', dateInBrazil.getHours())
+    .set('minute', dateInBrazil.getMinutes())
+    .set('second', dateInBrazil.getSeconds())
     .toISOString()
 
   const item = await prisma.item.create({

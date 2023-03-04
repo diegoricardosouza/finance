@@ -4,6 +4,7 @@ import {
   deleteItem,
   getAllItems,
   getAllItemsByDate,
+  getAllItemsByYear,
   getItem,
   updateItem
 } from '@/services/item'
@@ -33,6 +34,13 @@ export default async function handler(
           const [year, month] = date.split('-')
 
           const item = await getAllItemsByDate(parseInt(year), parseInt(month))
+          return res.status(200).json(item)
+        }
+
+        if (req.query.year) {
+          const year = req.query.year as string
+
+          const item = await getAllItemsByYear(parseInt(year))
           return res.status(200).json(item)
         }
 
