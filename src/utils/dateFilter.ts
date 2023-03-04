@@ -1,4 +1,3 @@
-// import { Item } from '@/types/Item'
 import { months } from './months'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -53,7 +52,3 @@ export const currentMonthExt = () => {
 
   return months[currentMonth].value
 }
-
-// export const orderItems = (items: Item[]) => {
-//   return items.sort((a, b) => b.date.getTime() - a.date.getTime())
-// }
