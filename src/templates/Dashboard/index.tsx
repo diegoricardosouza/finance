@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from 'react'
-import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 import { MdOutlineAttachMoney } from 'react-icons/md'
 import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
@@ -8,45 +7,86 @@ import { GiMoneyStack, GiTakeMyMoney } from 'react-icons/gi'
 import Base from '../Base'
 import Card from '@/components/Card'
 import SelectedData from '@/components/SelectedData'
-import { currentMonthExt } from '@/utils/dateFilter'
-import { lineChartOptionsArea } from '@/utils/charts'
+import BarChart from '@/components/BarChart'
+import {
+  totalYearByMonthCashIn,
+  totalYearByMonthCashOut
+} from '@/utils/itemsFilter'
 
 import * as S from './styles'
-
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
+import { Item } from '@/types/Item'
 
 const Dashboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
-  const date = new Date()
+  const [dataYear, setDataYear] = useState<Item[]>([])
 
-  const handleFilter = ({ month, year }: { month: string; year: string }) => {
-    setSelectedMonth(month === '' ? currentMonthExt() : month)
+  const handleFilter = ({ year }: { year: string }) => {
+    const date = new Date()
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
   }
 
-  // console.log('click', selectedMonth, selectedYear)
+  useEffect(() => {
+    const date = new Date()
+    setSelectedYear((prevState) =>
+      prevState === '' ? String(date.getFullYear()) : prevState
+    )
+  }, [selectedYear])
+
+  useEffect(() => {
+    const itensByMonth = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/item?year=${selectedYear}`
+      )
+      const data = await response.json()
+      setDataYear(data)
+    }
+
+    itensByMonth()
+  }, [selectedYear])
+
+  const data = {
+    labels: [
+      'JAN',
+      'FEV',
+      'MAR',
+      'ABR',
+      'MAI',
+      'JUN',
+      'JUL',
+      'AGO',
+      'SET',
+      'OUT',
+      'NOV',
+      'DEZ'
+    ],
+    datasets: {
+      labelOne: 'Entradas',
+      dataOne: totalYearByMonthCashIn(dataYear),
+      labelTwo: 'Saídas',
+      dataTwo: totalYearByMonthCashOut(dataYear)
+    }
+  }
 
   return (
     <Base title="Dashboard" titleBreadcrumb="Dashboard">
       <S.Container>
         <Card
           icon={<GiMoneyStack size={30} />}
-          title="Receita"
+          title="Receita Anual"
           subtitle="R$ 4682.50"
           color="white"
         />
 
         <Card
           icon={<GiTakeMyMoney size={30} />}
-          title="Despesa"
+          title="Despesa Anual"
           subtitle="R$ 3682.50"
           color="white"
         />
 
         <Card
           icon={<MdOutlineAttachMoney size={30} />}
-          title="Balanço"
+          title="Balanço Anual"
           subtitle="R$ 2682.50"
           color="green"
         />
@@ -56,21 +96,7 @@ const Dashboard = () => {
 
       <S.WrapperCharts>
         <S.WrapperLineChart>
-          {/* <Chart
-            options={lineChartOptionsArea}
-            series={[
-              {
-                name: 'Entradas',
-                data: [50, 64, 48, 66, 49, 68, 50, 64, 48, 66, 49, 68]
-              },
-              {
-                name: 'Saídas',
-                data: [30, 40, 24, 46, 20, 46, 30, 40, 24, 46, 20, 46]
-              }
-            ]}
-            type="line"
-            width="100%"
-          /> */}
+          <BarChart data={data} />
         </S.WrapperLineChart>
       </S.WrapperCharts>
     </Base>
