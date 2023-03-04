@@ -131,13 +131,22 @@ const Login = () => {
                   placeholder="Min. 8 caracteres"
                 />
 
-                <button type="button" onClick={handleViewPassword}>
+                <button
+                  type="button"
+                  onClick={handleViewPassword}
+                  aria-label="Mostrar senha"
+                >
                   {eye ? <RxEyeClosed size={18} /> : <BsEye size={18} />}
                 </button>
               </div>
             </FormGroup>
 
-            <Button type="submit" disabled={isLoading} isLoading={isLoading}>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              isLoading={isLoading}
+              aria-label="Open Menu"
+            >
               Entrar
             </Button>
           </form>
