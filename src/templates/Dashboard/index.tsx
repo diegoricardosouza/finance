@@ -17,9 +17,11 @@ import {
 import { Item } from '@/types/Item'
 
 import * as S from './styles'
+import Spinner from '@/components/Spinner'
 
 const Dashboard = () => {
   const [selectedYear, setSelectedYear] = useState('')
+  const [loading, setLoading] = useState(true)
   const [dataYear, setDataYear] = useState<Item[]>([])
   const balance = totalYearCashIn(dataYear) - totalYearCashOut(dataYear)
 
@@ -45,6 +47,7 @@ const Dashboard = () => {
     }
 
     itensByMonth()
+    setLoading(false)
   }, [selectedYear])
 
   const data = {
@@ -82,6 +85,7 @@ const Dashboard = () => {
             maximumFractionDigits: 2
           }).format(totalYearCashIn(dataYear))}
           color="white"
+          isLoading={loading}
         />
 
         <Card
@@ -93,6 +97,7 @@ const Dashboard = () => {
             maximumFractionDigits: 2
           }).format(totalYearCashOut(dataYear))}
           color="white"
+          isLoading={loading}
         />
 
         <Card
@@ -104,6 +109,7 @@ const Dashboard = () => {
             maximumFractionDigits: 2
           }).format(balance)}
           color={balance < 0 ? 'red' : balance > 1 ? 'green' : 'white'}
+          isLoading={loading}
         />
 
         <SelectedYear onButtonClick={handleFilter} />
@@ -111,7 +117,13 @@ const Dashboard = () => {
 
       <S.WrapperCharts>
         <S.WrapperLineChart>
-          <BarChart data={data} />
+          {loading ? (
+            <S.LoadingWrapper>
+              <Spinner size={27} />
+            </S.LoadingWrapper>
+          ) : (
+            <BarChart data={data} />
+          )}
         </S.WrapperLineChart>
       </S.WrapperCharts>
     </Base>
