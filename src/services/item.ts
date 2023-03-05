@@ -27,7 +27,12 @@ export const getItem = async (id: string) => {
   return item
 }
 
-export const getAllItemsByDate = async (year: number, month: number) => {
+export const getAllItemsByDate = async (
+  year: number,
+  month: number,
+  page?: string,
+  limit?: string
+) => {
   const firstDayOfMonth = new Date(year, month - 1, 1).toISOString()
   const lastDayOfMonth = new Date(year, month, 0).toISOString()
 
@@ -40,9 +45,22 @@ export const getAllItemsByDate = async (year: number, month: number) => {
     },
     orderBy: {
       date: 'desc'
+    },
+    skip: (Number(page) - 1) * Number(limit),
+    take: Number(limit)
+  })
+
+  const totalPosts = await prisma.item.count({
+    where: {
+      date: {
+        gte: new Date(firstDayOfMonth),
+        lt: new Date(lastDayOfMonth)
+      }
     }
   })
-  return items
+  const totalPages = Math.ceil(totalPosts / Number(limit))
+
+  return { items, totalPosts, totalPages }
 }
 
 export const getAllItemsByYear = async (year: number) => {
@@ -72,23 +90,23 @@ export const createItem = async (
 ) => {
   const now = new Date()
 
-  // Obtém o deslocamento UTC em minutos
-  const utcOffsetInMinutes = now.getTimezoneOffset()
+  // // Obtém o deslocamento UTC em minutos
+  // const utcOffsetInMinutes = now.getTimezoneOffset()
 
-  // Converte o deslocamento UTC para milissegundos
-  const utcOffsetInMilliseconds = utcOffsetInMinutes * 60 * 1000
+  // // Converte o deslocamento UTC para milissegundos
+  // const utcOffsetInMilliseconds = utcOffsetInMinutes * 60 * 1000
 
-  // Adiciona o deslocamento UTC ao horário atual para obter o horário UTC do Brasil
-  const utcTimeInBrazil = now.getTime() + utcOffsetInMilliseconds
+  // // Adiciona o deslocamento UTC ao horário atual para obter o horário UTC do Brasil
+  // const utcTimeInBrazil = now.getTime() + utcOffsetInMilliseconds
 
-  // Cria um novo objeto Date a partir do horário UTC do Brasil
-  const dateInBrazil = new Date(utcTimeInBrazil)
+  // // Cria um novo objeto Date a partir do horário UTC do Brasil
+  // const dateInBrazil = new Date(utcTimeInBrazil)
 
   const dateFormatted = dayjs(date)
     .locale('pt-br')
-    .set('hour', dateInBrazil.getHours())
-    .set('minute', dateInBrazil.getMinutes())
-    .set('second', dateInBrazil.getSeconds())
+    .set('hour', now.getHours())
+    .set('minute', now.getMinutes())
+    .set('second', now.getSeconds())
     .toISOString()
 
   const item = await prisma.item.create({

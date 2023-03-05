@@ -33,8 +33,34 @@ export default async function handler(
           const date = req.query.date as string
           const [year, month] = date.split('-')
 
-          const item = await getAllItemsByDate(parseInt(year), parseInt(month))
-          return res.status(200).json(item)
+          const page = req.query.page ? Number(req.query.page) : 1
+          const limit = req.query.limit ? Number(req.query.limit) : 10
+
+          const item = await getAllItemsByDate(
+            parseInt(year),
+            parseInt(month),
+            String(page),
+            String(limit)
+          )
+
+          if (req.query.limit === '-1') {
+            const item = await getAllItemsByDate(
+              parseInt(year),
+              parseInt(month),
+              String(page),
+              String('1000000')
+            )
+
+            return res.status(200).json({
+              item: item.items
+            })
+          }
+
+          return res.status(200).json({
+            item: item.items,
+            totalPages: item.totalPages,
+            currentPage: Number(page)
+          })
         }
 
         if (req.query.year) {

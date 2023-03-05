@@ -141,12 +141,7 @@ const Login = () => {
               </div>
             </FormGroup>
 
-            <Button
-              type="submit"
-              disabled={isLoading}
-              isLoading={isLoading}
-              aria-label="Open Menu"
-            >
+            <Button type="submit" disabled={isLoading} isLoading={isLoading}>
               Entrar
             </Button>
           </form>
