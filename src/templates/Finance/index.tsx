@@ -16,14 +16,15 @@ import FormGroup from '@/components/FormGroup'
 import { Input } from '@/components/Input'
 import Button from '@/components/Button'
 import { SelectForm } from '@/components/SelectForm'
+import Pagination from '@/components/Pagination'
 import { Item } from '@prisma/client'
 import {
   currentMonthExt,
   getCurrentDateNow,
   getCurrentMonth
 } from '@/utils/dateFilter'
-import { categories } from '@/data/categories'
 import { convertMoney } from '@/utils/numberFormat'
+import { categories } from '@/data/categories'
 
 import * as S from './styles'
 import 'react-toastify/dist/ReactToastify.css'
@@ -55,6 +56,7 @@ interface FormValues {
 
 const Finance = () => {
   const [list, setList] = useState<any>([])
+  const [listAll, setListAll] = useState<any>([])
   const [currentMonth, setCurrentMonth] = useState(getCurrentMonth())
   const [openModal, setOpenModal] = useState(false)
   const [inputDate, setInputDate] = useState(getCurrentDateNow())
@@ -64,10 +66,16 @@ const Finance = () => {
   const [loading, setLoading] = useState(true)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
+  const [totalPages, setTotalPages] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const balance = income - expense
 
   const { data: session } = useSession()
   const userId: any = session?.user
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page)
+  }
 
   const {
     register,
@@ -93,39 +101,52 @@ const Finance = () => {
 
   const getItensByDate = useCallback(async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}&page=${currentPage}&limit=6`
     )
     const resData = await response.json()
-    setList(resData)
+
+    setList(resData.item)
+    setTotalPages(resData.totalPages)
+    setCurrentPage(resData.currentPage)
     setLoading(false)
+  }, [currentMonth, currentPage])
+
+  const getAllItensByDate = useCallback(async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}&limit=-1`
+    )
+    const resData = await response.json()
+    setListAll(resData.item)
   }, [currentMonth])
 
   useEffect(() => {
     if (currentMonth !== '-') {
       getItensByDate()
+      getAllItensByDate()
     }
-  }, [currentMonth, getItensByDate])
+  }, [currentMonth, getAllItensByDate, getItensByDate])
 
   useEffect(() => {
     let incomeCount = 0
     let expenseCount = 0
 
-    for (const i in list) {
-      if (categories[list[i].category].expense) {
-        expenseCount += list[i].value
+    for (const i in listAll) {
+      if (categories[listAll[i].category].expense) {
+        expenseCount += listAll[i].value
       } else {
-        incomeCount += list[i].value
+        incomeCount += listAll[i].value
       }
     }
 
     setIncome(incomeCount)
     setExpense(expenseCount)
-  }, [list])
+  }, [listAll])
 
   const handleFilter = ({ month, year }: { month: string; year: string }) => {
     setLoading(true)
     setSelectedMonth(month === '' ? currentMonthExt() : month)
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
+    setCurrentPage(1)
     setLoading(false)
   }
 
@@ -169,6 +190,7 @@ const Finance = () => {
           theme: 'dark'
         })
         getItensByDate()
+        getAllItensByDate()
         reset()
         setTimeout(() => {
           setOpenModal(false)
@@ -198,6 +220,9 @@ const Finance = () => {
       })
 
       setList((prevState: Item[]) => prevState.filter((item) => item.id !== id))
+      setListAll((prevState: Item[]) =>
+        prevState.filter((item) => item.id !== id)
+      )
 
       toast.success('Item deletado com sucesso!', {
         position: toast.POSITION.BOTTOM_CENTER,
@@ -272,6 +297,12 @@ const Finance = () => {
           isLoading={loading}
         />
       </S.WrapperTable>
+
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
 
       <Modal onClose={handleCloseModal} visible={openModal}>
         <form onSubmit={handleSubmit(onSubmit)}>
