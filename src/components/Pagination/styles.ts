@@ -1,14 +1,11 @@
 import styled, { css } from 'styled-components'
 
 export const PaginationWrapper = styled.div`
-  ${({ theme }) => css`
-    width: 100%;
-    background: ${theme.colors.primaryLight};
-    border-radius: 2rem;
-    margin-top: 1.7rem;
-    position: relative;
-    overflow: hidden;
-  `}
+  width: 100%;
+  border-radius: 2rem;
+  margin-top: 1.7rem;
+  position: relative;
+  overflow: hidden;
 `
 
 export const PaginationContainer = styled.ul`
@@ -32,7 +29,7 @@ export const ItemPagination = styled.li`
       justify-content: center;
       color: ${theme.colors.white};
       cursor: pointer;
-      background: ${theme.colors.primary};
+      background: ${theme.colors.primaryLight};
       border-radius: 0.4rem;
       transition: all 300ms ease-in;
 
