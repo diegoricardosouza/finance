@@ -60,7 +60,7 @@ const Menu = () => {
               Kanban
             </MenuItem>
 
-            <MenuItem href="/" icon={<ImUser size={20} />}>
+            <MenuItem href="/dashboard/profile" icon={<ImUser size={20} />}>
               Profile
             </MenuItem>
 
