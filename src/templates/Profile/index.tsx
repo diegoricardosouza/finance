@@ -206,7 +206,7 @@ const Profile = () => {
               </FormGroup>
 
               <Button type="submit" disabled={isLoading} isLoading={isLoading}>
-                Atualizar dados
+                Atualizar perfil
               </Button>
             </form>
           </S.FormWrapper>
