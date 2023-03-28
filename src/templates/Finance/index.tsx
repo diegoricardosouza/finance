@@ -302,6 +302,7 @@ const Finance = () => {
         totalPages={totalPages}
         currentPage={currentPage}
         onPageChange={onPageChange}
+        maxPages={3}
       />
 
       <Modal onClose={handleCloseModal} visible={openModal}>
