@@ -1,15 +1,10 @@
 import { hashPassword } from '@/utils/passwordHash'
 import prisma from '../lib/db'
 
-interface createUserProps {
+interface updateUserProps {
   name: string
   email: string
-  password: string
-  role: string
-}
-
-interface updateUserProps {
-  updateData?: createUserProps
+  password?: string
 }
 
 export const getAllUsers = async () => {
@@ -54,7 +49,9 @@ export const createUser = async (
 }
 
 export const updateUser = async (id: string, updateData: updateUserProps) => {
-  const user = await prisma.user.update({
+  let user = {}
+
+  user = await prisma.user.update({
     where: {
       id
     },
@@ -62,6 +59,17 @@ export const updateUser = async (id: string, updateData: updateUserProps) => {
       ...updateData
     }
   })
+
+  if (updateData.password) {
+    const passwordHash = await hashPassword(updateData.password as string)
+    user = await prisma.user.update({
+      where: { id },
+      data: {
+        ...updateData,
+        password: passwordHash
+      }
+    })
+  }
 
   return user
 }

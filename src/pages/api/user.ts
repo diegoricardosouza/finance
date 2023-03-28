@@ -41,19 +41,19 @@ export default async function handler(
         }
 
         const user = await createUser(name, email, password, role)
-        return res.json(user)
+        return res.status(201).json(user)
       }
 
       case 'PUT': {
         const { id, ...updateData } = req.body
         const user = await updateUser(id, updateData)
-        return res.json(user)
+        return res.status(201).json(user)
       }
 
       case 'DELETE': {
         const { id } = req.body
         const user = await deleteUser(id)
-        return res.json(user)
+        return res.status(204).json(user)
       }
       default:
         break
