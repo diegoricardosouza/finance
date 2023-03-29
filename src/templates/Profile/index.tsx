@@ -11,6 +11,7 @@ import { RxEyeClosed } from 'react-icons/rx'
 import Base from '../Base'
 import * as S from './style'
 import 'react-toastify/dist/ReactToastify.css'
+import Spinner from '@/components/Spinner'
 
 interface FormValues {
   name: string
@@ -26,16 +27,19 @@ const Profile = () => {
   const [eye, setEye] = useState(false)
   const [viewPassword, setViewPassword] = useState('password')
   const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const passwordRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     const getUserLogged = async () => {
+      setLoading(true)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user?id=${userLogged?.id}`
       )
 
       const data = await response.json()
       setUser(data)
+      setLoading(false)
     }
 
     getUserLogged()
@@ -102,8 +106,6 @@ const Profile = () => {
         }
       }
 
-      console.log(formData)
-
       const id = user?.id
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user`,
@@ -145,70 +147,88 @@ const Profile = () => {
       <S.ProfileContainer>
         <S.LeftContainer>
           <S.HeaderProfile>
-            <S.ProfilePhoto>{user?.name.charAt(0)}</S.ProfilePhoto>
+            {loading ? (
+              <S.LoadingWrapper>
+                <Spinner size={27} />
+              </S.LoadingWrapper>
+            ) : (
+              <>
+                <S.ProfilePhoto>{user?.name.charAt(0)}</S.ProfilePhoto>
 
-            <S.ProfileInfos>
-              <S.ProfileTitle>{user?.name}</S.ProfileTitle>
-              <S.ProfileEmail>{user?.email}</S.ProfileEmail>
-            </S.ProfileInfos>
+                <S.ProfileInfos>
+                  <S.ProfileTitle>{user?.name}</S.ProfileTitle>
+                  <S.ProfileEmail>{user?.email}</S.ProfileEmail>
+                </S.ProfileInfos>
+              </>
+            )}
           </S.HeaderProfile>
 
           <S.FormWrapper>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormGroup
-                label="Nome"
-                required
-                error={errors?.name && 'Campo de preenchimento obrigatório.'}
-              >
-                <Input
-                  type="text"
-                  {...restName}
-                  placeholder="Digite seu nome"
-                  defaultValue={defaultValues?.name}
-                />
-              </FormGroup>
-
-              <FormGroup
-                label="Email"
-                required
-                error={errors?.email && 'Por favor digite um email válido.'}
-              >
-                <Input
-                  type="email"
-                  {...restEmail}
-                  placeholder="email@exemplo.com.br"
-                  defaultValue={user?.email}
-                  readOnly
-                />
-              </FormGroup>
-
-              <FormGroup
-                label="Password"
-                password
-                error={errors?.password && errorsPassword}
-              >
-                <div>
-                  <input
-                    type={viewPassword}
-                    {...rest}
-                    ref={(e) => {
-                      ref(e)
-                      passwordRef.current = e
-                    }}
-                    className="input-password"
-                    placeholder="Min. 8 caracteres"
+            {loading ? (
+              <S.LoadingWrapper>
+                <Spinner size={27} />
+              </S.LoadingWrapper>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormGroup
+                  label="Nome"
+                  required
+                  error={errors?.name && 'Campo de preenchimento obrigatório.'}
+                >
+                  <Input
+                    type="text"
+                    {...restName}
+                    placeholder="Digite seu nome"
+                    defaultValue={defaultValues?.name}
                   />
+                </FormGroup>
 
-                  <button type="button" onClick={handleViewPassword}>
-                    {eye ? <RxEyeClosed size={18} /> : <BsEye size={18} />}
-                  </button>
-                </div>
-              </FormGroup>
+                <FormGroup
+                  label="Email"
+                  required
+                  error={errors?.email && 'Por favor digite um email válido.'}
+                >
+                  <Input
+                    type="email"
+                    {...restEmail}
+                    placeholder="email@exemplo.com.br"
+                    defaultValue={user?.email}
+                    readOnly
+                  />
+                </FormGroup>
 
-              <Button type="submit" disabled={isLoading} isLoading={isLoading}>
-                Atualizar perfil
-              </Button>
-            </form>
+                <FormGroup
+                  label="Password"
+                  password
+                  error={errors?.password && errorsPassword}
+                >
+                  <div>
+                    <input
+                      type={viewPassword}
+                      {...rest}
+                      ref={(e) => {
+                        ref(e)
+                        passwordRef.current = e
+                      }}
+                      className="input-password"
+                      placeholder="Min. 8 caracteres"
+                    />
+
+                    <button type="button" onClick={handleViewPassword}>
+                      {eye ? <RxEyeClosed size={18} /> : <BsEye size={18} />}
+                    </button>
+                  </div>
+                </FormGroup>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                >
+                  Atualizar perfil
+                </Button>
+              </form>
+            )}
           </S.FormWrapper>
         </S.LeftContainer>
       </S.ProfileContainer>
