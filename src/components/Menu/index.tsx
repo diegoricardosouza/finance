@@ -52,8 +52,11 @@ const Menu = () => {
               Financeiro
             </MenuItem>
 
-            <MenuItem href="/" icon={<MdTableChart size={20} />}>
-              Tables
+            <MenuItem
+              href="/dashboard/freela"
+              icon={<MdTableChart size={20} />}
+            >
+              Freelas
             </MenuItem>
 
             <MenuItem href="/" icon={<TbLayoutKanban size={20} />}>
