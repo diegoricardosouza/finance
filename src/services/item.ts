@@ -1,3 +1,4 @@
+import { addZeroToDate } from '@/utils/dateFilter'
 import prisma from '../lib/db'
 
 interface createItemProps {
@@ -106,7 +107,11 @@ export const createItem = async (
   //   .set('minute', now.getMinutes())
   //   .set('second', now.getSeconds())
   //   .toISOString()
-  const dateFormatted = `${date}T${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}.000Z`
+  const dateFormatted = `${date}T${addZeroToDate(
+    now.getHours() as number
+  )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
+    now.getSeconds()
+  )}.000Z`
 
   const item = await prisma.item.create({
     data: {

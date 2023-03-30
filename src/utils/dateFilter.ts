@@ -44,7 +44,7 @@ export const getCurrentDateNow = () => {
   )}-${addZeroToDate(date.getDate())}`
 }
 
-const addZeroToDate = (n: number): string => (n < 10 ? `0${n}` : `${n}`)
+export const addZeroToDate = (n: number): string => (n < 10 ? `0${n}` : `${n}`)
 
 export const currentMonthExt = () => {
   const date = new Date()
