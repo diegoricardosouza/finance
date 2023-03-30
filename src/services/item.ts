@@ -108,7 +108,7 @@ export const createItem = async (
   //   .set('second', now.getSeconds())
   //   .toISOString()
   const dateFormatted = `${date}T${addZeroToDate(
-    now.getHours() as number
+    (now.getHours() - 3) as number
   )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
     now.getSeconds()
   )}.000Z`
