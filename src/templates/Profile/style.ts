@@ -23,6 +23,9 @@ export const HeaderProfile = styled.header`
     gap: 2rem;
     flex-direction: column;
     text-align: center;
+    position: relative;
+    min-height: 12.7rem;
+    overflow: hidden;
 
     @media (${device.laptop}) {
       flex-direction: row;
@@ -71,5 +74,20 @@ export const FormWrapper = styled.div`
     padding: 2rem;
     border-radius: 2rem;
     margin-top: 2rem;
+    position: relative;
+    min-height: 40.9rem;
+    overflow: hidden;
   `}
+`
+
+export const LoadingWrapper = styled.div`
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
