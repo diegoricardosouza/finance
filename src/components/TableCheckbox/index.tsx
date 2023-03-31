@@ -1,8 +1,6 @@
 import ButtonDelete from '../ButtonDelete'
 
 import * as S from './style'
-import { formatDate } from '@/utils/dateFilter'
-import { categories } from '@/data/categories'
 import Spinner from '../Spinner'
 import { useState } from 'react'
 import Checkbox from '../Checkbox'
@@ -36,10 +34,14 @@ const TableCheckbox = ({
   onDelete,
   isLoading
 }: TablePropsComponent) => {
-  const [isChecked, setIsChecked] = useState(false)
+  const [todoItems, setTodoItems] = useState<ItemTableCheck[]>(list)
 
   const handleCheckboxChange = (id: string, checked: boolean) => {
-    setIsChecked(checked)
+    setTodoItems((prevState) =>
+      prevState.map((item) =>
+        item.id === id ? { ...item, active: checked } : item
+      )
+    )
   }
 
   return (
@@ -74,7 +76,7 @@ const TableCheckbox = ({
             </S.Thead>
 
             <S.Tbody>
-              {list.map((item) => (
+              {todoItems.map((item) => (
                 <S.TrBody key={item.id}>
                   <S.TdBody>
                     <Checkbox
@@ -84,8 +86,8 @@ const TableCheckbox = ({
                     />
                   </S.TdBody>
 
-                  <S.TdBody>{item.title}</S.TdBody>
-                  <S.TdBodyValue>
+                  <S.TdBody active={item.active}>{item.title}</S.TdBody>
+                  <S.TdBodyValue active={item.active}>
                     {new Intl.NumberFormat('pt-BR', {
                       style: 'currency',
                       currency: 'BRL',

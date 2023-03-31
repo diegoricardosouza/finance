@@ -5,7 +5,8 @@ export const Container = styled.div`
     input[type='checkbox'] {
       position: relative;
       cursor: pointer;
-      width: 2.1rem;
+      width: 2rem;
+      height: 1.5rem;
       background: transparent;
       transition: all 200ms ease-in-out;
       border-radius: 0.5rem;
@@ -18,8 +19,8 @@ export const Container = styled.div`
         content: '';
         display: block;
         position: absolute;
-        width: 1.8rem;
-        height: 1.8rem;
+        width: 1.6rem;
+        height: 1.6rem;
         top: 0;
         left: 0;
         border: 0.2rem solid ${theme.colors.white};
@@ -32,8 +33,8 @@ export const Container = styled.div`
         content: '';
         display: block;
         position: absolute;
-        width: 1.8rem;
-        height: 1.8rem;
+        width: 1.6rem;
+        height: 1.6rem;
         top: 0;
         left: 0;
         border: 0.2rem solid ${theme.colors.secondary};
@@ -53,8 +54,8 @@ export const Container = styled.div`
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
         position: absolute;
-        top: 4px;
-        left: 8px;
+        top: 3px;
+        left: 7px;
         transition: all 200ms ease-in-out;
       }
     }

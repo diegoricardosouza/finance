@@ -1,6 +1,10 @@
 import { device } from '@/utils/device'
 import styled, { css } from 'styled-components'
 
+interface ActiveProp {
+  active?: boolean
+}
+
 export const Container = styled.div`
   padding: 2rem 0;
   overflow-x: auto;
@@ -50,7 +54,7 @@ export const Th = styled.th`
     }
 
     &:first-child {
-      padding-left: 2.5rem;
+      padding-left: 3.9rem;
     }
 
     &:last-child {
@@ -64,29 +68,43 @@ export const Tbody = styled.tbody``
 
 export const TrBody = styled.tr``
 
-export const TdBody = styled.td`
-  ${({ theme }) => css`
+export const TdBody = styled.td<ActiveProp>`
+  ${({ theme, active }) => css`
     display: table-cell;
-    color: ${theme.colors.white};
-    font-weight: ${theme.font.bold};
+    color: ${active ? 'rgba(255, 255, 255, 0.1)' : theme.colors.white};
+    font-weight: ${theme.font.normal};
     padding: 1.5rem 0 0.7rem 0;
+    position: relative;
+    transition: all 300ms ease-in;
+    font-size: 1.6rem;
 
     &:first-child {
-      padding-left: 2.5rem;
+      padding-left: 3.5rem;
+
+      &:before {
+        display: none;
+      }
     }
 
     &:last-child {
       padding-right: 2.5rem;
+
+      &:before {
+        display: none;
+      }
     }
   `}
 `
 
-export const TdBodyValue = styled.td`
-  ${({ theme }) => css`
+export const TdBodyValue = styled.td<ActiveProp>`
+  ${({ theme, active }) => css`
     display: table-cell;
-    color: ${theme.colors.white};
-    font-weight: ${theme.font.bold};
-    padding: 1.5rem 0 0.7rem 0;
+    color: ${active ? 'rgba(255, 255, 255, 0.1)' : theme.colors.white};
+    font-weight: ${theme.font.normal};
+    padding: 1.5rem 1.5rem 0.7rem 0;
+    position: relative;
+    transition: all 300ms ease-in;
+    font-size: 1.6rem;
 
     &:first-child {
       padding-left: 2.5rem;
