@@ -10,3 +10,28 @@ export const Container = styled.div`
     overflow: hidden;
   `}
 `
+
+export const AddButton = styled.button`
+  ${({ theme }) => css`
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    border: 0;
+    background: ${theme.colors.secondary};
+    color: ${theme.colors.white};
+    border-radius: 0.6rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    z-index: 3;
+
+    &:hover {
+      background: ${theme.colors.secondaryHover};
+    }
+  `}
+`
