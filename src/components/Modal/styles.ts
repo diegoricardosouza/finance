@@ -35,6 +35,23 @@ const contentHide = keyframes`
   }
 `
 
+const contentShow2 = keyframes`
+  to {
+    opacity: 1;
+    top: 5rem;
+    transform: translateX(-50%) scale(1);
+    pointer-events: inherit;
+  }
+`
+
+const contentHide2 = keyframes`
+  to {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.96);
+    pointer-events: none;
+  }
+`
+
 export const WrapperContainer = styled.div``
 
 export const Overlay = styled.div<StyleModalProps>`
@@ -58,20 +75,29 @@ export const Container = styled.div<StyleModalProps>`
     box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
       hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
     position: fixed;
-    top: 50%;
+    top: 15rem;
     left: 50%;
     opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
+    transform: translateX(-50%) scale(0.96);
     width: 90vw;
     max-width: 500px;
     max-height: 85vh;
     padding: 25px;
-    animation: ${open ? contentShow : contentHide} 150ms
+    animation: ${open ? contentShow2 : contentHide2} 150ms
       cubic-bezier(0.16, 1, 0.3, 1) forwards;
     z-index: 6;
 
     &:focus {
       outline: none;
+    }
+
+    @media (${device.laptop}) {
+      top: 50%;
+      left: 50%;
+      opacity: 0;
+      transform: translate(-50%, -48%) scale(0.96);
+      animation: ${open ? contentShow : contentHide} 150ms
+        cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   `}
 `
