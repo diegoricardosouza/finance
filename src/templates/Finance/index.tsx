@@ -152,6 +152,7 @@ const Finance = () => {
 
   const handleCloseModal = () => {
     setOpenModal(!openModal)
+    reset()
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
