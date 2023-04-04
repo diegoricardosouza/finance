@@ -88,7 +88,7 @@ export const createItem = async (
   value: number,
   id: string
 ) => {
-  const now = new Date()
+  // const now = new Date()
 
   // // Obtém o deslocamento UTC em minutos
   // const utcOffsetInMinutes = now.getTimezoneOffset()
@@ -102,20 +102,22 @@ export const createItem = async (
   // // Cria um novo objeto Date a partir do horário UTC do Brasil
   // const dateInBrazil = new Date(utcTimeInBrazil)
 
-  const dateFormatted = dayjs(date)
-    .set('hour', now.getHours() - 3)
-    .set('minute', now.getMinutes())
-    .set('second', now.getSeconds())
-    .toISOString()
+  // const dateFormatted = dayjs(date)
+  //   .set('hour', now.getHours() - 3)
+  //   .set('minute', now.getMinutes())
+  //   .set('second', now.getSeconds())
+  //   .toISOString()
   // const dateFormatted = `${date}T${addZeroToDate(
   //   (now.getHours() - 3) as number
   // )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
   //   now.getSeconds()
   // )}.000Z`
 
+  const dateFormatted = new Date(date)
+
   const item = await prisma.item.create({
     data: {
-      date: dateFormatted,
+      date: dateFormatted.toISOString(),
       category,
       title,
       value,
