@@ -97,7 +97,6 @@ export const createItem = async (
     .set('hour', now.getHours() - 3)
     .set('minute', now.getMinutes())
     .set('second', now.getSeconds())
-    .add(1, 'day')
     .toISOString()
   // const dateFormatted = `${date}T${addZeroToDate(
   //   now.getHours() - 3
