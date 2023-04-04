@@ -24,17 +24,24 @@ export const getCurrentMonth = () => {
 //   return newList
 // }
 
+function addHours(date: Date, hours: number) {
+  date.setHours(date.getHours() + hours)
+
+  return date
+}
+
 export const formatDate = (date: string): string => {
-  // const dateFormated = new Date(date)
-  // const now = new Date()
-  // dateFormated.setUTCHours(now.getUTCHours() - 3)
+  const dateFormated = new Date(date)
+  const newDate = addHours(dateFormated, 3)
 
-  // const year = dateFormated.getFullYear()
-  // const month = dateFormated.getMonth() + 1
-  // const day = dateFormated.getDate()
+  const year = newDate.getFullYear()
+  const month = newDate.getMonth() + 1
+  const day = newDate.getDate()
 
-  // return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`
-  return dayjs(date).locale('pt-br').format('DD/MM/YYYY')
+  // console.log(newDate)
+
+  return `${addZeroToDate(day)}/${addZeroToDate(month)}/${year}`
+  // return dayjs(date).format('DD/MM/YYYY')
 }
 
 export const getCurrentDateNow = () => {
