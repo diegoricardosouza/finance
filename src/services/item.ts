@@ -104,7 +104,7 @@ export const createItem = async (
 
   const dateFormatted = dayjs(date)
     .locale('pt-br')
-    .set('hour', now.getHours())
+    .set('hour', now.getHours() - 3)
     .set('minute', now.getMinutes())
     .set('second', now.getSeconds())
     .toISOString()
