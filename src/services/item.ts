@@ -1,6 +1,5 @@
+import { addZeroToDate } from '@/utils/dateFilter'
 import prisma from '../lib/db'
-import dayjs from 'dayjs'
-import 'dayjs/locale/pt-br'
 
 interface createItemProps {
   date: Date
@@ -88,19 +87,10 @@ export const createItem = async (
   value: number,
   id: string
 ) => {
-  // const now = new Date()
-
-  // // Obtém o deslocamento UTC em minutos
-  // const utcOffsetInMinutes = now.getTimezoneOffset()
-
-  // // Converte o deslocamento UTC para milissegundos
-  // const utcOffsetInMilliseconds = utcOffsetInMinutes * 60 * 1000
-
-  // // Adiciona o deslocamento UTC ao horário atual para obter o horário UTC do Brasil
-  // const utcTimeInBrazil = now.getTime() + utcOffsetInMilliseconds
-
-  // // Cria um novo objeto Date a partir do horário UTC do Brasil
-  // const dateInBrazil = new Date(utcTimeInBrazil)
+  const now = new Date()
+  const dateAdjustment = `${date} ${addZeroToDate(
+    now.getHours()
+  )}:${addZeroToDate(now.getMinutes())}:${addZeroToDate(now.getSeconds())}`
 
   // const dateFormatted = dayjs(date)
   //   .set('hour', now.getHours() - 3)
@@ -113,7 +103,7 @@ export const createItem = async (
   //   now.getSeconds()
   // )}.000Z`
 
-  const dateFormatted = new Date(date)
+  const dateFormatted = new Date(dateAdjustment)
 
   const item = await prisma.item.create({
     data: {
