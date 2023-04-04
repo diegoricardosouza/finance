@@ -88,26 +88,24 @@ export const createItem = async (
   id: string
 ) => {
   const now = new Date()
-  const dateAdjustment = `${date} ${addZeroToDate(
-    now.getHours()
-  )}:${addZeroToDate(now.getMinutes())}:${addZeroToDate(now.getSeconds())}`
+  // const dateAdjustment = `${date} ${addZeroToDate(
+  //   now.getHours()
+  // )}:${addZeroToDate(now.getMinutes())}:${addZeroToDate(now.getSeconds())}`
 
   // const dateFormatted = dayjs(date)
   //   .set('hour', now.getHours() - 3)
   //   .set('minute', now.getMinutes())
   //   .set('second', now.getSeconds())
   //   .toISOString()
-  // const dateFormatted = `${date}T${addZeroToDate(
-  //   (now.getHours() - 3) as number
-  // )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
-  //   now.getSeconds()
-  // )}.000Z`
+  const dateFormatted = `${date}T${addZeroToDate(
+    now.getHours() - 3
+  )}:${addZeroToDate(now.getMinutes())}:${addZeroToDate(now.getSeconds())}.000Z`
 
-  const dateFormatted = new Date(dateAdjustment)
+  // const dateFormatted = new Date(dateAdjustment)
 
   const item = await prisma.item.create({
     data: {
-      date: dateFormatted.toISOString(),
+      date: dateFormatted,
       category,
       title,
       value,
