@@ -94,10 +94,10 @@ export const createItem = async (
   // )}:${addZeroToDate(now.getMinutes())}:${addZeroToDate(now.getSeconds())}`
 
   const dateFormatted = dayjs(date)
-    .set('hour', now.getHours() - 3)
+    .set('hour', now.getHours())
     .set('minute', now.getMinutes())
     .set('second', now.getSeconds())
-    .add(1, 'day')
+    // .add(1, 'day')
     .toISOString()
   // const dateFormatted = `${date}T${addZeroToDate(
   //   now.getHours() - 3
