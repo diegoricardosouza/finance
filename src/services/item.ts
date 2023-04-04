@@ -1,4 +1,3 @@
-import { addZeroToDate } from '@/utils/dateFilter'
 import prisma from '../lib/db'
 import dayjs from 'dayjs'
 
@@ -97,7 +96,7 @@ export const createItem = async (
     .set('hour', now.getHours() - 3)
     .set('minute', now.getMinutes())
     .set('second', now.getSeconds())
-    // .set('day', now.getDay() + 1)
+    .add(1, 'day')
     .toISOString()
   // const dateFormatted = `${date}T${addZeroToDate(
   //   now.getHours() - 3
