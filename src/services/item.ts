@@ -103,7 +103,6 @@ export const createItem = async (
   // const dateInBrazil = new Date(utcTimeInBrazil)
 
   const dateFormatted = dayjs(date)
-    .locale('pt-br')
     .set('hour', now.getHours() - 3)
     .set('minute', now.getMinutes())
     .set('second', now.getSeconds())
