@@ -1,5 +1,6 @@
-import { addZeroToDate } from '@/utils/dateFilter'
 import prisma from '../lib/db'
+import dayjs from 'dayjs'
+import 'dayjs/locale/pt-br'
 
 interface createItemProps {
   date: Date
@@ -101,17 +102,17 @@ export const createItem = async (
   // // Cria um novo objeto Date a partir do horário UTC do Brasil
   // const dateInBrazil = new Date(utcTimeInBrazil)
 
-  // const dateFormatted = dayjs(date)
-  //   .locale('pt-br')
-  //   .set('hour', now.getHours())
-  //   .set('minute', now.getMinutes())
-  //   .set('second', now.getSeconds())
-  //   .toISOString()
-  const dateFormatted = `${date}T${addZeroToDate(
-    (now.getHours() - 3) as number
-  )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
-    now.getSeconds()
-  )}.000Z`
+  const dateFormatted = dayjs(date)
+    .locale('pt-br')
+    .set('hour', now.getHours())
+    .set('minute', now.getMinutes())
+    .set('second', now.getSeconds())
+    .toISOString()
+  // const dateFormatted = `${date}T${addZeroToDate(
+  //   (now.getHours() - 3) as number
+  // )}:${addZeroToDate(now.getMinutes() as number)}:${addZeroToDate(
+  //   now.getSeconds()
+  // )}.000Z`
 
   const item = await prisma.item.create({
     data: {
