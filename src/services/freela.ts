@@ -12,7 +12,11 @@ interface updateItemProps {
 }
 
 export const getAllItems = async () => {
-  return await prisma.freela.findMany({})
+  return await prisma.freela.findMany({
+    orderBy: {
+      active: 'asc'
+    }
+  })
 }
 
 export const getItem = async (id: string) => {
