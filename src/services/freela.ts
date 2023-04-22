@@ -1,21 +1,12 @@
 import prisma from '../lib/db'
 
-interface createItemProps {
-  title: string
-  value: number
-  id: string
-  active: boolean
-}
-
 interface updateItemProps {
-  updateData?: createItemProps
+  active?: boolean
 }
 
 export const getAllItems = async () => {
   return await prisma.freela.findMany({
-    orderBy: {
-      active: 'asc'
-    }
+    orderBy: [{ active: 'asc' }, { title: 'asc' }]
   })
 }
 
@@ -49,22 +40,13 @@ export const createItem = async (
   return item
 }
 
-export const updateItem = async (
-  id: string,
-  idUser: string,
-  updateData: updateItemProps
-) => {
+export const updateItem = async (id: string, updateData: updateItemProps) => {
   const item = await prisma.freela.update({
     where: {
       id
     },
     data: {
-      ...updateData,
-      user: {
-        connect: {
-          id: idUser
-        }
-      }
+      active: updateData.active
     }
   })
 
