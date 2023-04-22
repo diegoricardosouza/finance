@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast, ToastContainer } from 'react-toastify'
@@ -29,33 +29,6 @@ const columns = [
   }
 ]
 
-const list = [
-  {
-    id: 'sfasfasdfas',
-    title: 'Freela dev2 Brde Mensal',
-    value: 10.23,
-    active: false
-  },
-  {
-    id: '234214sfw',
-    title: 'Freela dev2 Pontta',
-    value: 1300.51,
-    active: true
-  },
-  {
-    id: 'asdaswe1e',
-    title: 'Freela dev2 Hive Engenharia',
-    value: 14.51,
-    active: false
-  },
-  {
-    id: '123r4r4',
-    title: 'Freela dev2 Brde Calendário',
-    value: 15.51,
-    active: true
-  }
-]
-
 interface FormValues {
   title: string
   value: string
@@ -72,22 +45,30 @@ const Freela = () => {
   const [openModal, setOpenModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [list, setList] = useState<FreelaT[]>([])
   const [listAll, setListAll] = useState<FreelaT[] | null>([])
   const [listPending, setListPending] = useState<FreelaT[] | null>([])
 
   const { data: session } = useSession()
   const userId: any = session?.user
 
+  const getFreelas = useCallback(async () => {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/freela`
+    )
+    const resData = await response.json()
+
+    setList(resData)
+  }, [])
+
+  useEffect(() => {
+    getFreelas()
+  }, [getFreelas])
+
   useEffect(() => {
     setListAll(list)
     setListPending(listAll?.filter((item) => item.active === false) || [])
-  }, [listAll])
-
-  console.log(listPending)
-
-  const handleDelete = async (id: string) => {
-    console.log('delete', id)
-  }
+  }, [list, listAll])
 
   const {
     register,
@@ -108,10 +89,42 @@ const Freela = () => {
       const formData = {
         ...data,
         value: parseFloat(data.value.replace(/\./g, '').replace(',', '.')),
-        id: userId.id
+        id: userId.id,
+        active: false
       }
 
-      console.log(formData)
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/freela`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        }
+      )
+
+      const resData = await response.json()
+
+      if (resData.error) {
+        toast.error(resData.error, {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+      } else {
+        setLoading(true)
+        toast.success('Freela criado com sucesso!', {
+          position: toast.POSITION.BOTTOM_CENTER,
+          theme: 'dark'
+        })
+        getFreelas()
+        reset()
+        setTimeout(() => {
+          setOpenModal(false)
+        }, 1000)
+        setLoading(false)
+      }
 
       setIsLoading(false)
     } catch (error) {
@@ -121,6 +134,50 @@ const Freela = () => {
       })
       setIsLoading(false)
     }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/freela`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+      })
+
+      setList((prevState) => prevState.filter((item) => item.id !== id))
+
+      toast.success('Freela deletado com sucesso!', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+    } catch {
+      toast.error('Ocorreu um erro ao deletar o freela', {
+        position: toast.POSITION.BOTTOM_CENTER,
+        theme: 'dark'
+      })
+    }
+  }
+
+  const handleUpdate = async (id: string, checked: boolean) => {
+    console.log('update', id)
+    console.log('check', checked)
+
+    const formData = {
+      id,
+      active: checked
+    }
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/freela`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
   }
 
   return (
@@ -142,6 +199,7 @@ const Freela = () => {
           deleteButton
           onDelete={handleDelete}
           isLoading={loading}
+          onUpdate={handleUpdate}
         />
       </S.Container>
 
