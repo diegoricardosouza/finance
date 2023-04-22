@@ -2,7 +2,7 @@ import ButtonDelete from '../ButtonDelete'
 
 import * as S from './style'
 import Spinner from '../Spinner'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Checkbox from '../Checkbox'
 
 interface Column {
@@ -35,6 +35,10 @@ const TableCheckbox = ({
   isLoading
 }: TablePropsComponent) => {
   const [todoItems, setTodoItems] = useState<ItemTableCheck[]>(list)
+
+  useEffect(() => {
+    setTodoItems(list)
+  }, [list])
 
   const handleCheckboxChange = (id: string, checked: boolean) => {
     setTodoItems((prevState) =>
