@@ -38,8 +38,8 @@ export default async function handler(
       }
 
       case 'PUT': {
-        const { id, idUser, ...updateData } = req.body
-        const item = await updateItem(id, idUser, updateData)
+        const { id, ...updateData } = req.body
+        const item = await updateItem(id, updateData)
         return res.json(item)
       }
 
