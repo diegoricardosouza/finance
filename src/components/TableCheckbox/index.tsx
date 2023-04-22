@@ -24,6 +24,7 @@ interface TablePropsComponent {
   deleteButton?: boolean
   onDelete: (id: string) => void
   isLoading?: boolean
+  onUpdate?: (id: string, checked: boolean) => void
 }
 
 const TableCheckbox = ({
@@ -32,7 +33,8 @@ const TableCheckbox = ({
   title,
   deleteButton,
   onDelete,
-  isLoading
+  isLoading,
+  onUpdate
 }: TablePropsComponent) => {
   const [todoItems, setTodoItems] = useState<ItemTableCheck[]>(list)
 
@@ -46,6 +48,11 @@ const TableCheckbox = ({
         item.id === id ? { ...item, active: checked } : item
       )
     )
+  }
+
+  const groupFunctionsUpdate = (id: string, checked: boolean) => {
+    handleCheckboxChange(id, checked)
+    onUpdate?.(id, checked)
   }
 
   return (
@@ -86,7 +93,7 @@ const TableCheckbox = ({
                     <Checkbox
                       id={item.id}
                       checked={item.active}
-                      onChange={handleCheckboxChange}
+                      onChange={groupFunctionsUpdate}
                     />
                   </S.TdBody>
 
