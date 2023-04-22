@@ -2,7 +2,7 @@ import ButtonDelete from '../ButtonDelete'
 
 import * as S from './style'
 import Spinner from '../Spinner'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Checkbox from '../Checkbox'
 
 interface Column {
@@ -24,6 +24,7 @@ interface TablePropsComponent {
   deleteButton?: boolean
   onDelete: (id: string) => void
   isLoading?: boolean
+  onUpdate?: (id: string, checked: boolean) => void
 }
 
 const TableCheckbox = ({
@@ -32,9 +33,14 @@ const TableCheckbox = ({
   title,
   deleteButton,
   onDelete,
-  isLoading
+  isLoading,
+  onUpdate
 }: TablePropsComponent) => {
   const [todoItems, setTodoItems] = useState<ItemTableCheck[]>(list)
+
+  useEffect(() => {
+    setTodoItems(list)
+  }, [list])
 
   const handleCheckboxChange = (id: string, checked: boolean) => {
     setTodoItems((prevState) =>
@@ -42,6 +48,11 @@ const TableCheckbox = ({
         item.id === id ? { ...item, active: checked } : item
       )
     )
+  }
+
+  const groupFunctionsUpdate = (id: string, checked: boolean) => {
+    handleCheckboxChange(id, checked)
+    onUpdate?.(id, checked)
   }
 
   return (
@@ -82,7 +93,7 @@ const TableCheckbox = ({
                     <Checkbox
                       id={item.id}
                       checked={item.active}
-                      onChange={handleCheckboxChange}
+                      onChange={groupFunctionsUpdate}
                     />
                   </S.TdBody>
 
