@@ -31,6 +31,10 @@ export const WrapperCharts = styled.div`
   grid-template-columns: 1fr;
   gap: 2rem;
   margin-top: 2rem;
+
+  @media (${device.tablet}) {
+    grid-template-columns: 1fr 32rem;
+  }
 `
 
 export const WrapperLineChart = styled.div`
@@ -59,4 +63,24 @@ export const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`
+
+export const WrapperPieChart = styled.div`
+  min-height: 35rem;
+`
+
+export const ContainerPieChart = styled.div`
+  ${({ theme }) => css`
+    background: ${theme.colors.primaryLight};
+    border-radius: 2rem;
+    width: 100%;
+    padding: 2rem;
+    overflow-x: scroll;
+    position: relative;
+    min-height: 49rem;
+
+    @media (${device.tablet}) {
+      overflow-x: auto;
+    }
+  `}
 `

@@ -116,3 +116,33 @@ export const totalYearCashOut = (list: Item[]) => {
     return accumulator + value
   }, 0)
 }
+
+export const filterItensByCategory = (itens: Item[], category: string) => {
+  return itens?.filter((item: Item) => item.category === category)
+}
+
+export const totalCategoryItens = (list: Item[], category: string) => {
+  const filteredList = filterItensByCategory(list, category)
+  let totalItens = 0
+
+  for (const i in filteredList) {
+    if (filteredList[i].category === category) {
+      totalItens += filteredList[i].value
+    }
+  }
+
+  return Number(totalItens.toFixed(2))
+}
+
+// export const filterListByCashOut = (list: Item[], month: string): number => {
+//   const filteredList = filterListbyMonth(list, month)
+//   let incomeCount = 0
+
+//   for (const i in filteredList) {
+//     if (filteredList[i].category !== 'salary') {
+//       incomeCount += filteredList[i].value
+//     }
+//   }
+
+//   return incomeCount
+// }

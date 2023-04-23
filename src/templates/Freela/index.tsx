@@ -14,6 +14,8 @@ import { convertMoney } from '@/utils/numberFormat'
 
 import * as S from './styles'
 import 'react-toastify/dist/ReactToastify.css'
+import Card from '@/components/Card'
+import { GiMoneyStack } from 'react-icons/gi'
 
 const columns = [
   {
@@ -46,10 +48,10 @@ const Freela = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const [list, setList] = useState<FreelaT[]>([])
-  const [listAll, setListAll] = useState<FreelaT[] | null>([])
-  const [listPending, setListPending] = useState<FreelaT[] | null>([])
+  const [income, setIncome] = useState(0)
 
   const { data: session } = useSession()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const userId: any = session?.user
 
   const getFreelas = useCallback(async () => {
@@ -66,9 +68,16 @@ const Freela = () => {
   }, [getFreelas])
 
   useEffect(() => {
-    setListAll(list)
-    setListPending(listAll?.filter((item) => item.active === false) || [])
-  }, [list, listAll])
+    let incomeCount = 0
+
+    for (const i in list) {
+      if (!list[i].active) {
+        incomeCount += list[i].value
+      }
+    }
+
+    setIncome(incomeCount)
+  }, [list])
 
   const {
     register,
@@ -162,9 +171,6 @@ const Freela = () => {
   }
 
   const handleUpdate = async (id: string, checked: boolean) => {
-    console.log('update', id)
-    console.log('check', checked)
-
     const formData = {
       id,
       active: checked
@@ -178,10 +184,26 @@ const Freela = () => {
       },
       body: JSON.stringify(formData)
     })
+
+    getFreelas()
   }
 
   return (
     <Base title="Freelas" titleBreadcrumb="Freelas">
+      <S.Header>
+        <Card
+          icon={<GiMoneyStack size={30} />}
+          title="Total à receber"
+          subtitle={new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            maximumFractionDigits: 2
+          }).format(income)}
+          color="white"
+          isLoading={loading}
+        />
+      </S.Header>
+
       <S.Container>
         {!loading && (
           <S.AddButton
