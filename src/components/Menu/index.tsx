@@ -7,7 +7,6 @@ import {
   MdOutlineClose,
   MdOutlineMenu
 } from 'react-icons/md'
-import { TbLayoutKanban } from 'react-icons/tb'
 import { ImUser } from 'react-icons/im'
 import { TbReportMoney } from 'react-icons/tb'
 
@@ -57,10 +56,6 @@ const Menu = () => {
               icon={<MdTableChart size={20} />}
             >
               Freelas
-            </MenuItem>
-
-            <MenuItem href="/" icon={<TbLayoutKanban size={20} />}>
-              Kanban
             </MenuItem>
 
             <MenuItem href="/dashboard/profile" icon={<ImUser size={20} />}>
