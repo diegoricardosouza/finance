@@ -8,27 +8,60 @@ import Base from '../Base'
 import Card from '@/components/Card'
 import SelectedYear from '@/components/SelectedYear'
 import BarChart from '@/components/BarChart'
+import Spinner from '@/components/Spinner'
+import PieChart from '@/components/PieChart'
+import SelectedMonth from '@/components/SelectedMonth'
 import {
+  totalCategoryItens,
   totalYearByMonthCashIn,
   totalYearByMonthCashOut,
   totalYearCashIn,
   totalYearCashOut
 } from '@/utils/itemsFilter'
+import { currentMonthExt, getCurrentMonth } from '@/utils/dateFilter'
 import { Item } from '@/types/Item'
 
 import * as S from './styles'
-import Spinner from '@/components/Spinner'
 
 const Dashboard = () => {
   const [selectedYear, setSelectedYear] = useState('')
   const [loading, setLoading] = useState(true)
   const [dataYear, setDataYear] = useState<Item[]>([])
   const balance = totalYearCashIn(dataYear) - totalYearCashOut(dataYear)
+  const [selectedMonth, setSelectedMonth] = useState('')
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth())
+  const [list, setList] = useState<any>([])
 
   const handleFilter = ({ year }: { year: string }) => {
     const date = new Date()
     setSelectedYear(year === '' ? String(date.getFullYear()) : year)
   }
+
+  const handleFilterMonth = ({ month }: { month: string }) => {
+    const date = new Date()
+    setSelectedMonth(month === '' ? String(date.getFullYear()) : month)
+  }
+
+  useEffect(() => {
+    const getItensMonth = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}&limit=-1`
+      )
+      const resData = await response.json()
+
+      setList(resData.item)
+    }
+
+    getItensMonth()
+  }, [currentMonth])
+
+  useEffect(() => {
+    setSelectedMonth((prevState) =>
+      prevState === '' ? currentMonthExt() : prevState
+    )
+
+    setCurrentMonth(`${selectedYear}-${selectedMonth}`)
+  }, [selectedMonth, selectedYear])
 
   useEffect(() => {
     const date = new Date()
@@ -72,6 +105,13 @@ const Dashboard = () => {
       dataTwo: totalYearByMonthCashOut(dataYear)
     }
   }
+
+  const dataPie = [
+    totalCategoryItens(list, 'food'),
+    totalCategoryItens(list, 'rent'),
+    totalCategoryItens(list, 'marketplace'),
+    totalCategoryItens(list, 'salary')
+  ]
 
   return (
     <Base title="Dashboard" titleBreadcrumb="Dashboard">
@@ -125,6 +165,20 @@ const Dashboard = () => {
             <BarChart data={data} />
           )}
         </S.WrapperLineChart>
+
+        <S.ContainerPieChart>
+          <SelectedMonth onButtonClick={handleFilterMonth} />
+
+          <S.WrapperPieChart>
+            {loading ? (
+              <S.LoadingWrapper>
+                <Spinner size={27} />
+              </S.LoadingWrapper>
+            ) : (
+              <PieChart data={dataPie} />
+            )}
+          </S.WrapperPieChart>
+        </S.ContainerPieChart>
       </S.WrapperCharts>
     </Base>
   )
