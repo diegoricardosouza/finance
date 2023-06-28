@@ -32,9 +32,13 @@ export const getAllItemsByDate = async (
   page?: string,
   limit?: string
 ) => {
-  const firstDayOfMonth = new Date(year, month - 1, 1)
-  const lastDayOfMonth = new Date(year, month, 0)
-  lastDayOfMonth.setDate(lastDayOfMonth.getDate() + 1) // adiciona 1 dia
+  // const firstDayOfMonth = new Date(year, month - 1, 1)
+  // const lastDayOfMonth = new Date(year, month, 0)
+  // lastDayOfMonth.setDate(lastDayOfMonth.getDate() + 1) // adiciona 1 dia
+
+  const firstDayOfMonth = new Date(Date.UTC(year, month - 1))
+  const lastDayOfMonth = new Date(Date.UTC(year, month))
+  // lastDayOfMonth.setDate(lastDayOfMonth.getDate() + 1) // adiciona 1 dia
 
   const items = await prisma.item.findMany({
     where: {
@@ -106,7 +110,7 @@ export const createItem = async (
 
   const item = await prisma.item.create({
     data: {
-      date: dateFormatted,
+      date: new Date(date),
       category,
       title,
       value,

@@ -43,6 +43,21 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
+    const date = new Date()
+    setSelectedYear((prevState) =>
+      prevState === '' ? String(date.getFullYear()) : prevState
+    )
+  }, [selectedYear])
+
+  useEffect(() => {
+    setSelectedMonth((prevState) =>
+      prevState === '' ? currentMonthExt() : prevState
+    )
+
+    setCurrentMonth(`${selectedYear}-${selectedMonth}`)
+  }, [selectedMonth, selectedYear])
+
+  useEffect(() => {
     const getItensMonth = async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/item?date=${currentMonth}&limit=-1`
@@ -54,21 +69,6 @@ const Dashboard = () => {
 
     getItensMonth()
   }, [currentMonth])
-
-  useEffect(() => {
-    setSelectedMonth((prevState) =>
-      prevState === '' ? currentMonthExt() : prevState
-    )
-
-    setCurrentMonth(`${selectedYear}-${selectedMonth}`)
-  }, [selectedMonth, selectedYear])
-
-  useEffect(() => {
-    const date = new Date()
-    setSelectedYear((prevState) =>
-      prevState === '' ? String(date.getFullYear()) : prevState
-    )
-  }, [selectedYear])
 
   useEffect(() => {
     const itensByMonth = async () => {
